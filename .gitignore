@@ -1,3 +1,4 @@
 token.py
 *.pyc
 /.c9/**/*
+/log/**/*

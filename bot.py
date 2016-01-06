@@ -8,15 +8,22 @@ import token
 bot = telebot.TeleBot(token.t())
 
 # log
+
 def listener(messages):
     for m in messages:
         cid = m.chat.id
         if cid > 0:
-            print str(m.chat.first_name) + " [" + str(cid) + "]: " + m.text
+            mensaje = str(m.chat.first_name) + " [" + str(cid) + "]: " + m.text
         else:
-            print str(m.from_user.first_name) + "[" + str(cid) + "]: " + m.text
+            mensaje = str(m.from_user.first_name) + "[" + str(cid) + "]: " + m.text 
+        f = open( 'log/log', 'a') 
+        f.write(mensaje + "\n")
+        f.close()
+        print mensaje
+
 
 bot.set_update_listener(listener)
+
 #############################################
 # text
 @bot.message_handler(commands=['windows'])
