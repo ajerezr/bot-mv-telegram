@@ -1,4 +1,3 @@
 config.py
 *.pyc
-/.c9/**/*
 /files/**/*
