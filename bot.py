@@ -3,9 +3,11 @@
 import telebot
 from telebot import types
 import time
-import token
+import config
 
-bot = telebot.TeleBot(token.t())
+bot = telebot.TeleBot(config.token())
+administrador = token.admin()
+
 usuarios = [line.rstrip('\n') for line in open('files/usuarios')]
 
 # log
@@ -16,8 +18,8 @@ def listener(messages):
         if cid > 0:
             mensaje = str(m.chat.first_name) + " [" + str(cid) + "]: " + m.text
         else:
-            mensaje = str(m.from_user.first_name) + "[" + str(cid) + "]: " + m.text 
-        f = open( 'files/log', 'a') 
+            mensaje = str(m.from_user.first_name) + "[" + str(cid) + "]: " + m.text
+        f = open( 'files/log', 'a')
         f.write(mensaje + "\n")
         f.close()
         print mensaje
