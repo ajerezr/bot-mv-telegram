@@ -5,9 +5,7 @@ from telebot import types
 import time
 import token
 
-TOKEN = token.t()
-
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot(token.t())
 
 # log
 def listener(messages):
