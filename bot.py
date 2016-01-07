@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import telebot, time, config, os, tempfile, subprocess, random, requests
+import telebot, time, config, os, tempfile, subprocess, random, requests, time
 from telebot import types
 from telebot import util
 from random import randint
@@ -32,7 +32,6 @@ bot.set_update_listener(listener)
 #############################################
 
 
-
 #############################################
 # text
 @bot.message_handler(commands=['windows'])
@@ -55,11 +54,22 @@ def command_repo(m):
 @bot.message_handler(commands=['tits'])
 def command_tits(m):
     cid = m.chat.id
-    r = requests.get(r'https://www.reddit.com/r/legalteens+nipples+gonewild+nsfw+nsfw_gif+tits+realgirls/.json')
-    number = randint(1,25)
-    tits = r.json()['data']['children'][number]['data']['url']
+    rtits = requests.get(r'https://www.reddit.com/r/legalteens+nipples+gonewild+nsfw+nsfw_gif+tits+realgirls/.json')
+    number = randint(0,24)
+    tits = rtits.json()['data']['children'][number]['data']['url']
     bot.send_message(cid, tits)
+
+@bot.message_handler(commands=['wallpapers'])
+def command_wallpapers(m):
+    cid = m.chat.id
+    r = requests.get(r'https://www.reddit.com/r/wallpapers/.json')
+    number = randint(0,20)
+    wallpapers = r.json()['data']['children'][number]['data']['url']
+    bot.send_message(cid, wallpapers)
 
 #############################################
 # peticion
 bot.polling(none_stop=True) # Con esto, le decimos al bot que siga funcionando incluso si encuentra algún fallo.
+
+# reddit
+
