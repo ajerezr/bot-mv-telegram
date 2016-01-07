@@ -63,7 +63,7 @@ def command_tits(m):
 def command_wallpapers(m):
     cid = m.chat.id
     r = requests.get(r'https://www.reddit.com/r/wallpapers/.json')
-    number = randint(0,20)
+    number = randint(0,24)
     wallpapers = r.json()['data']['children'][number]['data']['url']
     bot.send_message(cid, wallpapers)
 
