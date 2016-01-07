@@ -1,29 +1,37 @@
 # -*- coding: utf-8 -*-
 
-import telebot
+import telebot, time, config, os, tempfile, subprocess, random, requests
 from telebot import types
-import time
-import config
+from telebot import util
+from random import randint
 
 bot = telebot.TeleBot(config.token())
 
 #############################################
 # log
 
-# def listener(messages):
-#     for m in messages:
-#         cid = m.chat.id
-#         if cid > 0:
-#             mensaje = str(m.chat.first_name) + " [" + str(cid) + "]: " + m.text
-#         else:
-#             mensaje = str(m.from_user.first_name) + "[" + str(cid) + "]: " + m.text
-#         f = open( 'files/log', 'a')
-#         f.write(mensaje + "\n")
-#         f.close()
-#         print(mensaje)
+def listener(messages):
+    for m in messages:
+        cid = m.chat.id
+        if cid > 0:
+            mensaje = str(m.chat.first_name) + " [" + str(cid) + "]: " + m.text
+        else:
+            mensaje = str(m.from_user.first_name) + "[" + str(cid) + "]: " + m.text
+        f = open( 'files/log', 'a')
+        f.write(mensaje + "\n")
+        f.close()
+        print(mensaje)
 
 
-# bot.set_update_listener(listener)
+bot.set_update_listener(listener)
+#############################################
+#############################################
+#############################################
+#############################################
+#############################################
+#############################################
+
+
 
 #############################################
 # text
@@ -35,12 +43,22 @@ def command_windows(m):
 @bot.message_handler(commands=['hilo'])
 def command_hilo(m):
     cid = m.chat.id
-    bot.send_message( cid, 'Hilo GNU/Linux\n https://www.mediavida.com/foro/hard-soft/gnulinux-hilo-general-489974')
+    # bot.send_message_with_markdown( cid, "[Hilo GNU/Linux](https://www.mediavida.com/foro/hard-soft/gnulinux-hilo-general-489974)")
+    text = "[Hilo GNU/Linux](https://www.mediavida.com/foro/hard-soft/gnulinux-hilo-general-489974)"
+    bot.send_message( cid, text, parse_mode="Markdown")
 
 @bot.message_handler(commands=['repo'])
 def command_repo(m):
     cid = m.chat.id
-    bot.send_message( cid, 'Repositorio en Github\n https://github.com/ajerezr/bot-mv-telegram')
+    bot.send_message( cid, '[Repositorio en Github](https://github.com/ajerezr/bot-mv-telegram)', parse_mode="Markdown")
+
+@bot.message_handler(commands=['tits'])
+def command_tits(m):
+    cid = m.chat.id
+    r = requests.get(r'https://www.reddit.com/r/legalteens+nipples+gonewild+nsfw+nsfw_gif+tits+realgirls/.json')
+    number = randint(1,25)
+    tits = r.json()['data']['children'][number]['data']['url']
+    bot.send_message(cid, tits)
 
 #############################################
 # peticion
