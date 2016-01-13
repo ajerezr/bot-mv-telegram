@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import telebot, time, config, os, tempfile, subprocess, random, requests, time
+import telebot, time, config, os, tempfile, subprocess, random, requests
 from telebot import types
 from telebot import util
 from random import randint
@@ -56,17 +56,22 @@ def command_tits(m):
     cid = m.chat.id
     rtits = requests.get(r'https://www.reddit.com/r/legalteens+nipples+gonewild+nsfw+nsfw_gif+tits+realgirls/.json')
     number = randint(0,24)
-    tits = rtits.json()['data']['children'][number]['data']['url']
-    bot.send_message(cid, tits)
+    try:
+        tits = rtits.json()['data']['children'][number]['data']['url']
+        bot.send_message(cid, tits)
+    except:
+        bot.send_message(cid, "espera chumacho!")
 
 @bot.message_handler(commands=['wallpapers'])
 def command_wallpapers(m):
     cid = m.chat.id
     r = requests.get(r'https://www.reddit.com/r/wallpapers/.json')
     number = randint(0,24)
-    wallpapers = r.json()['data']['children'][number]['data']['url']
-    bot.send_message(cid, wallpapers)
-
+    try:
+        wallpapers = rtits.json()['data']['children'][number]['data']['url']
+        bot.send_message(cid, wallpapers)
+    except:
+        bot.send_message(cid, "espera chumacho!")
 @bot.message_handler(commands=['bash'])
 def command_wallpapers(m):
     ss64 = "http://ss64.com/bash/"
@@ -81,6 +86,11 @@ def command_wallpapers(m):
         msg = '[%s](%s)\n'%(text[1],ss)+des
         bot.send_message(cid, msg, parse_mode="Markdown")
 
+@bot.message_handler(commands=['uptime'])
+def command_uptime(m):
+    cid = m.chat.id
+    uptime = os.system("uptime")
+    bot.send_message(cid, uptime)
 
 
 #############################################
