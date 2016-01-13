@@ -40,10 +40,9 @@ def command_windows(m):
     cid = m.chat.id
     bot.send_message( cid, 'Vete a la mierda')
 
-@bot.message_handler(commands=['hilo'])
+@bot.message_handler(commands=['thread'])
 def command_hilo(m):
     cid = m.chat.id
-    # bot.send_message_with_markdown( cid, "[Hilo GNU/Linux](https://www.mediavida.com/foro/hard-soft/gnulinux-hilo-general-489974)")
     text = "[Hilo GNU/Linux](https://www.mediavida.com/foro/hard-soft/gnulinux-hilo-general-489974)"
     bot.send_message( cid, text, parse_mode="Markdown")
 
@@ -87,5 +86,3 @@ def command_wallpapers(m):
 #############################################
 # peticion
 bot.polling(none_stop=True) # Con esto, le decimos al bot que siga funcionando incluso si encuentra algún fallo.
-
-# reddit
