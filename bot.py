@@ -77,14 +77,17 @@ def command_wallpapers(m):
     ss64 = "http://ss64.com/bash/"
     cid = m.chat.id
     text = m.text.split(" ")
-    ss = ss64+text[1]+".html"
-    r = requests.get(ss)
-    des = bs(r.text, "html.parser").find("p").text
-    if "404" in des:
-        bot.send_message(cid, "Feck! Comando desconocido", parse_mode="Markdown")
+    if len(text) > 1 and text[1]!="/":
+        ss = ss64+text[1]+".html"
+        r = requests.get(ss)
+        des = bs(r.text, "html.parser").find("p").text
+        if "404" in des:
+            bot.send_message(cid, "Comando desconocido", parse_mode="Markdown")
+        else:
+            msg = '[%s](%s)\n'%(text[1],ss)+des
+            bot.send_message(cid, msg, parse_mode="Markdown")
     else:
-        msg = '[%s](%s)\n'%(text[1],ss)+des
-        bot.send_message(cid, msg, parse_mode="Markdown")
+        bot.send_message(cid, "example: /bash echo")
 
 #############################################
 # peticion
