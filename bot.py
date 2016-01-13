@@ -4,6 +4,7 @@ import telebot, time, config, os, tempfile, subprocess, random, requests, time
 from telebot import types
 from telebot import util
 from random import randint
+from bs4 import BeautifulSoup as bs
 
 bot = telebot.TeleBot(config.token())
 
@@ -67,9 +68,24 @@ def command_wallpapers(m):
     wallpapers = r.json()['data']['children'][number]['data']['url']
     bot.send_message(cid, wallpapers)
 
+@bot.message_handler(commands=['bash'])
+def command_wallpapers(m):
+    ss64 = "http://ss64.com/bash/"
+    cid = m.chat.id
+    text = m.text.split(" ")
+    ss = ss64+text[1]+".html"
+    r = requests.get(ss)
+    des = bs(r.text, "html.parser").find("p").text
+    if "404" in des:
+        bot.send_message(cid, "Feck! Comando desconocido", parse_mode="Markdown")
+    else:
+        msg = '[%s](%s)\n'%(text[1],ss)+des
+        bot.send_message(cid, msg, parse_mode="Markdown")
+
+
+
 #############################################
 # peticion
 bot.polling(none_stop=True) # Con esto, le decimos al bot que siga funcionando incluso si encuentra algún fallo.
 
 # reddit
-
