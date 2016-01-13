@@ -86,13 +86,6 @@ def command_wallpapers(m):
         msg = '[%s](%s)\n'%(text[1],ss)+des
         bot.send_message(cid, msg, parse_mode="Markdown")
 
-@bot.message_handler(commands=['uptime'])
-def command_uptime(m):
-    cid = m.chat.id
-    uptime = os.system("uptime")
-    bot.send_message(cid, uptime)
-
-
 #############################################
 # peticion
 bot.polling(none_stop=True) # Con esto, le decimos al bot que siga funcionando incluso si encuentra algún fallo.
