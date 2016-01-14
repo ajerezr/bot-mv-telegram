@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import telebot, time, config, os, tempfile, subprocess, random, requests
+import telebot, time, config, os, tempfile, subprocess, random, requests, json
 from telebot import types
 from telebot import util
 from random import randint
@@ -9,8 +9,8 @@ from bs4 import BeautifulSoup as bs
 bot = telebot.TeleBot(config.token())
 
 #############################################
-# log
-
+# log                                       #
+#############################################
 def listener(messages):
     for m in messages:
         cid = m.chat.id
@@ -24,24 +24,17 @@ def listener(messages):
         print(mensaje)
 
 
-bot.set_update_listener(listener)
+#bot.set_update_listener(listener)
 #############################################
+# Handlers                                  #
 #############################################
-#############################################
-#############################################
-#############################################
-#############################################
-
-
-#############################################
-# text
 @bot.message_handler(commands=['windows'])
 def command_windows(m):
     cid = m.chat.id
     bot.send_message( cid, 'Vete a la mierda')
 
 @bot.message_handler(commands=['thread'])
-def command_hilo(m):
+def command_thread(m):
     cid = m.chat.id
     text = "[Hilo GNU/Linux](https://www.mediavida.com/foro/hard-soft/gnulinux-hilo-general-489974)"
     bot.send_message( cid, text, parse_mode="Markdown")
@@ -72,8 +65,9 @@ def command_wallpapers(m):
         bot.send_message(cid, wallpapers)
     except:
         bot.send_message(cid, "espera chumacho!")
+
 @bot.message_handler(commands=['bash'])
-def command_wallpapers(m):
+def command_bash(m):
     ss64 = "http://ss64.com/bash/"
     cid = m.chat.id
     text = m.text.split(" ")
@@ -89,6 +83,22 @@ def command_wallpapers(m):
     else:
         bot.send_message(cid, "example: /bash echo")
 
+@bot.message_handler(commands=['g'])
+def command_g(m):
+    cid = m.chat.id
+    quest = m.text.strip("/g").replace(" ", "+")
+    if quest:
+        google = "http://www.google.com/search?hl=en&safe=off&q=" + quest[1::]
+        r = requests.get('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=%s'%(quest[1::]))
+        rest = r.json()
+        x2 = str(rest['responseData']['results'][1]['content'])+"\n"+google
+        bot.send_message(cid, x2, parse_mode="html", disable_web_page_preview=True)
+    else:
+        bot.send_message(cid, "example: /g cats")
+
 #############################################
 # peticion
+# http://api.oboobs.ru/
+#############################################
+
 bot.polling(none_stop=True) # Con esto, le decimos al bot que siga funcionando incluso si encuentra algún fallo.
