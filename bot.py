@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import telebot, time, config, os, tempfile, subprocess, random, requests, json
+import telebot, time, config, os, tempfile, subprocess, random, requests, json, re
 from telebot import types
 from telebot import util
 from random import randint
@@ -28,6 +28,16 @@ def listener(messages):
 #############################################
 # Handlers                                  #
 #############################################
+@bot.message_handler(commands=['boobs'])
+def boobs(message):
+    number = random.randint(1, 3000)
+    query = 'http://api.oboobs.ru/boobs/'+str(number)+'/1/rank/'
+    r = requests.get(query)
+    info = r.json()
+    chat_id = message.chat.id
+    text = 'http://media.oboobs.ru/boobs/'+info[0]['preview'].strip('boobs_preview/')
+    bot.send_message( chat_id, text)
+
 @bot.message_handler(commands=['windows'])
 def command_windows(m):
     cid = m.chat.id
