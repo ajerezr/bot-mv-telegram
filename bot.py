@@ -48,6 +48,32 @@ def butts(message):
     text = 'http://media.obutts.ru/butts/'+info[0]['preview'].strip('butts_preview/')
     bot.send_message( chat_id, text)
 
+@bot.message_handler(commands=['imdb'])
+def imdb(message):
+    pene = ''
+    query = 'http://www.omdbapi.com/?t='
+    text1 = (message.text).strip('/imdb ')
+    query += text1.replace(" ", "+")
+    query += '&y=&plot=short&r=json'
+    chat_id = message.chat.id
+    r = requests.get(query)
+    info = r.json()
+    try:
+        title = info['Title'] + '\n'
+        year = info['Year']  + '\n'
+        rated = info['Rated'] + '\n'
+        released = info['Released'] + '\n'
+        runtime = info['Runtime'] + '\n'
+        director = info['Director'] + '\n'
+        writer = info['Writer']  + '\n'
+        actors = info['Actors'] + '\n'
+        plot = info['Plot'] + '\n'
+        poster = info['Poster']
+        pene = pene + '*Title:* ' + '['+title+']'+'('+poster+')' +'\n' + '*Year:* ' +year + '*Rated:* ' + rated + '*Released:* ' + released + '*Runtime:* ' + runtime + '*Director:* ' + director + '*Writer:* ' + writer + '*Actors:* ' + actors + '*Plot:* ' + plot
+        bot.send_message(chat_id, pene, parse_mode='Markdown')
+    except KeyError:
+        bot.send_message(chat_id, 'Nope :(',)
+
 @bot.message_handler(commands=['windows'])
 def command_windows(m):
     cid = m.chat.id
