@@ -91,10 +91,34 @@ def command_g(m):
         google = "http://www.google.com/search?hl=en&safe=off&q=" + quest[1::]
         r = requests.get('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=%s'%(quest[1::]))
         rest = r.json()
-        x2 = str(rest['responseData']['results'][1]['content'])+"\n"+google
-        bot.send_message(cid, x2, parse_mode="html", disable_web_page_preview=True)
+        try:
+            x2 = rest['responseData']['results'][1]['content']+"\n"+google
+            bot.send_message(cid, x2, parse_mode="html", disable_web_page_preview=True)
+        except:
+            pass
     else:
         bot.send_message(cid, "example: /g cats")
+
+@bot.message_handler(commands=['wiki'])
+def command_wiki(m):
+    cid = m.chat.id
+    quest = m.text.strip("/wiki ")
+    if quest:
+        baseurl = 'http://es.wikipedia.org/w/api.php'
+        my_atts = {}
+        my_atts['action'] = 'opensearch'
+        my_atts['format'] = 'json'
+        my_atts['search'] = quest
+        my_atts['limit'] = 1
+        resp = requests.get(baseurl, params = my_atts)
+        data = resp.json()
+        if data[3]:
+            url = data[3][0]
+            bot.send_message(cid, url)
+        else:
+            bot.send_message(cid, 'No "hay" resultados de'+quest)
+    else:
+        bot.send_message(cid, "example: /wiki cats")
 
 #############################################
 # peticion
