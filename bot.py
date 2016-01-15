@@ -38,6 +38,16 @@ def boobs(message):
     text = 'http://media.oboobs.ru/boobs/'+info[0]['preview'].strip('boobs_preview/')
     bot.send_message( chat_id, text)
 
+@bot.message_handler(commands=['butts'])
+def butts(message):
+    number = random.randint(1, 3000)
+    query = 'http://api.obutts.ru/butts/'+str(number)+'/1/rank/'
+    r = requests.get(query)
+    info = r.json()
+    chat_id = message.chat.id
+    text = 'http://media.obutts.ru/butts/'+info[0]['preview'].strip('butts_preview/')
+    bot.send_message( chat_id, text)
+
 @bot.message_handler(commands=['windows'])
 def command_windows(m):
     cid = m.chat.id
