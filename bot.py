@@ -1,30 +1,43 @@
 # -*- coding: utf-8 -*-
-
-import telebot, time, config, os, tempfile, subprocess, random, requests, json, re
+import telebot
+import time
+import config
+import os
+import tempfile
+import subprocess
+import random
+import requests
+import json
+import re
 from telebot import types
 from telebot import util
 from random import randint
 from bs4 import BeautifulSoup as bs
+from datetime import datetime
 
 bot = telebot.TeleBot(config.token())
 
 #############################################
-# log                                       #
+# log                                       #                                           #
 #############################################
 def listener(messages):
     for m in messages:
         cid = m.chat.id
+        chat_type = m.chat.type
+        chat_title = m.chat.title
+        now = datetime.now().strftime("%Y-%m-%d %H:%M")
         if cid > 0:
-            mensaje = str(m.chat.first_name) + " [" + str(cid) + "]: " + m.text
+            username = m.chat.first_name
         else:
-            mensaje = str(m.from_user.first_name) + "[" + str(cid) + "]: " + m.text
+            username = m.from_user.first_name
+        #[time][cid][chat_type][chat_title][username][m.text]
+        mensaje = ("[%s][%s][%s][%s][%s][%s]"%(now,cid,chat_type,chat_title,username,m.text))
         f = open( 'files/log', 'a')
         f.write(mensaje + "\n")
         f.close()
-        print(mensaje)
 
+bot.set_update_listener(listener)
 
-#bot.set_update_listener(listener)
 #############################################
 # Handlers                                  #
 #############################################
@@ -122,7 +135,7 @@ def command_bash(m):
         r = requests.get(ss)
         des = bs(r.text, "html.parser").find("p").text
         if "404" in des:
-            bot.send_message(cid, "Comando desconocido", parse_mode="Markdown")
+            bot.reply_to(m, "Mala consulta")
         else:
             msg = '[%s](%s)\n'%(text[1],ss)+des
             bot.send_message(cid, msg, parse_mode="Markdown")
@@ -140,35 +153,34 @@ def command_g(m):
         try:
             x2 = rest['responseData']['results'][1]['content']+"\n"+google
             bot.send_message(cid, x2, parse_mode="html", disable_web_page_preview=True)
-        except:
-            pass
+        except IndexError:
+            bot.reply_to(m, "Mala consulta")
     else:
         bot.send_message(cid, "example: /g cats")
 
 @bot.message_handler(commands=['wiki'])
 def command_wiki(m):
+    baseurl = 'http://es.wikipedia.org/w/api.php'
+    my_atts = {}
+    my_atts['action'] = 'opensearch'
+    my_atts['format'] = 'json'
+    my_atts['limit'] = 1
     cid = m.chat.id
     quest = m.text.strip("/wiki ")
     if quest:
-        baseurl = 'http://es.wikipedia.org/w/api.php'
-        my_atts = {}
-        my_atts['action'] = 'opensearch'
-        my_atts['format'] = 'json'
         my_atts['search'] = quest
-        my_atts['limit'] = 1
         resp = requests.get(baseurl, params = my_atts)
         data = resp.json()
-        if data[3]:
+        try:
             url = data[3][0]
             bot.send_message(cid, url)
-        else:
-            bot.send_message(cid, 'No "hay" resultados de'+quest)
+        except IndexError:
+            bot.reply_to(m, "Mala consulta")
     else:
         bot.send_message(cid, "example: /wiki cats")
 
 #############################################
 # peticion
-# http://api.oboobs.ru/
 #############################################
 
 bot.polling(none_stop=True) # Con esto, le decimos al bot que siga funcionando incluso si encuentra algún fallo.
