@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import telebot, time, config, os, tempfile, subprocess, random, requests, json
+import telebot, time, config, os, tempfile, subprocess, random, requests, json, re
 from telebot import types
 from telebot import util
 from random import randint
@@ -28,6 +28,52 @@ def listener(messages):
 #############################################
 # Handlers                                  #
 #############################################
+@bot.message_handler(commands=['boobs'])
+def boobs(message):
+    number = random.randint(1, 3000)
+    query = 'http://api.oboobs.ru/boobs/'+str(number)+'/1/rank/'
+    r = requests.get(query)
+    info = r.json()
+    chat_id = message.chat.id
+    text = 'http://media.oboobs.ru/boobs/'+info[0]['preview'].strip('boobs_preview/')
+    bot.send_message( chat_id, text)
+
+@bot.message_handler(commands=['butts'])
+def butts(message):
+    number = random.randint(1, 3000)
+    query = 'http://api.obutts.ru/butts/'+str(number)+'/1/rank/'
+    r = requests.get(query)
+    info = r.json()
+    chat_id = message.chat.id
+    text = 'http://media.obutts.ru/butts/'+info[0]['preview'].strip('butts_preview/')
+    bot.send_message( chat_id, text)
+
+@bot.message_handler(commands=['imdb'])
+def imdb(message):
+    pene = ''
+    query = 'http://www.omdbapi.com/?t='
+    text1 = (message.text).strip('/imdb ')
+    query += text1.replace(" ", "+")
+    query += '&y=&plot=short&r=json'
+    chat_id = message.chat.id
+    r = requests.get(query)
+    info = r.json()
+    try:
+        title = info['Title'] + '\n'
+        year = info['Year']  + '\n'
+        rated = info['Rated'] + '\n'
+        released = info['Released'] + '\n'
+        runtime = info['Runtime'] + '\n'
+        director = info['Director'] + '\n'
+        writer = info['Writer']  + '\n'
+        actors = info['Actors'] + '\n'
+        plot = info['Plot'] + '\n'
+        poster = info['Poster']
+        pene = pene + '*Title:* ' + '['+title+']'+'('+poster+')' +'\n' + '*Year:* ' +year + '*Rated:* ' + rated + '*Released:* ' + released + '*Runtime:* ' + runtime + '*Director:* ' + director + '*Writer:* ' + writer + '*Actors:* ' + actors + '*Plot:* ' + plot
+        bot.send_message(chat_id, pene, parse_mode='Markdown')
+    except KeyError:
+        bot.send_message(chat_id, 'Nope :(',)
+
 @bot.message_handler(commands=['windows'])
 def command_windows(m):
     cid = m.chat.id
