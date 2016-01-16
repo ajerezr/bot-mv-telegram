@@ -41,6 +41,18 @@ bot.set_update_listener(listener)
 #############################################
 # Handlers                                  #
 #############################################
+@bot.message_handler(commands=['urbdict'])
+def urbdict(message):
+    try:
+        chat_id = message.chat.id
+        url = 'http://api.urbandictionary.com/v0/define?term=%s' % ((message.text).lstrip('/urbdict '))
+        response = requests.get(url)
+        data = response.json()
+        text = data['list'][0]['definition']
+        bot.send_message(chat_id, text)
+    except:
+        bot.send_message(chat_id, 'Definition too long :<',)
+
 @bot.message_handler(commands=['boobs'])
 def boobs(message):
     number = random.randint(1, 3000)
