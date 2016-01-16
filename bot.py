@@ -18,7 +18,7 @@ from datetime import datetime
 bot = telebot.TeleBot(config.token())
 
 #############################################
-# log                                       #                                           #
+# log                                       #
 #############################################
 def listener(messages):
     for m in messages:
@@ -114,28 +114,6 @@ def command_thread(m):
 def command_repo(m):
     cid = m.chat.id
     bot.send_message( cid, '[Repositorio en Github](https://github.com/ajerezr/bot-mv-telegram)', parse_mode="Markdown")
-
-@bot.message_handler(commands=['tits'])
-def command_tits(m):
-    cid = m.chat.id
-    rtits = requests.get(r'https://www.reddit.com/r/legalteens+nipples+gonewild+nsfw+nsfw_gif+tits+realgirls/.json')
-    number = randint(0,24)
-    try:
-        tits = rtits.json()['data']['children'][number]['data']['url']
-        bot.send_message(cid, tits)
-    except:
-        bot.send_message(cid, "espera chumacho!")
-
-@bot.message_handler(commands=['wallpapers'])
-def command_wallpapers(m):
-    cid = m.chat.id
-    r = requests.get(r'https://www.reddit.com/r/wallpapers/.json')
-    number = randint(0,24)
-    try:
-        wallpapers = rtits.json()['data']['children'][number]['data']['url']
-        bot.send_message(cid, wallpapers)
-    except:
-        bot.send_message(cid, "espera chumacho!")
 
 @bot.message_handler(commands=['bash'])
 def command_bash(m):
