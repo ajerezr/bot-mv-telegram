@@ -61,7 +61,11 @@ def boobs(message):
     info = r.json()
     chat_id = message.chat.id
     text = 'http://media.oboobs.ru/boobs/'+info[0]['preview'].strip('boobs_preview/')
-    bot.send_message( chat_id, text)
+    with open(str(number)+'.jpg', 'wb') as photo:
+       photo.write(requests.get(text).content)
+    photo = open(str(number)+'.jpg', 'rb')
+    bot.send_photo (chat_id, photo)
+    os.remove(str(number)+'.jpg')
 
 @bot.message_handler(commands=['butts'])
 def butts(message):
