@@ -1,21 +1,19 @@
-# Install
-
-clone repo
-
-install requierements.txt
-
+### Install
+```sh
+$ git clone git clone https://github.com/ajerezr/bot-mv-telegram.git
+$ pip install requierements.txt
 $ python bot.py
-
+```
 fun :D
 
-# Commands
-
-/tits - show tits from reddit
-
-/wallpapers - show wallpaper from reddit
-
-/bash <command> - show info about that command
-
-/repo - this repo
-
-/thread - go to thread from mediavida
+### Commands
+* /boobs - show boobs
+* /butt - show butts
+* /imb - search in imdb
+* /tits - show tits from reddit
+* /wallpapers - show wallpaper from reddit
+* /bash <command> - show info about bash command
+* /repo - this repo
+* /thread - go to thread from mediavida
+* /g - search in google
+* /wiki - search in wikipedia
