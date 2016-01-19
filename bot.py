@@ -39,6 +39,44 @@ def listener(messages):
 bot.set_update_listener(listener)
 
 #############################################
+# Requests                                  #
+#############################################
+def GetJson(url):
+    headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'}
+    try:
+        rest = requests.get(url, headers=headers)
+        return rest.json()
+    except requests.exceptions.RequestException:
+        return "requests error"
+
+
+#############################################
+# ¿?                                        #
+#############################################
+def Reddits(key):
+    r = 'https://www.reddit.com'
+    urls = {}
+    urls['asians_gif'] = '/r/asian_gifs/.json?limit=100'
+    urls['random'] = '/r/legalteens+nipples+gonewild+nsfw+nsfw_gif+tits+realgirls/.json?limit=100'
+    urls['anal'] = '/r/anal/.json?limit=100'
+    urls['asianhotties'] = '/r/asianhotties/.json?limit=100'
+    urls['AsiansGoneWild'] = '/r/AsiansGoneWild/.json?limit=100'
+    urls['RealGirls'] = '/r/RealGirls/.json?limit=100'
+    urls['wallpapers'] = '/r/wallpapers/.json?limit=100'
+    if key in urls.keys():
+        url = r+urls[key]
+    else:
+        url = r+urls[random.choice(list(urls.keys()))]
+    r = GetJson(url)
+    try:
+        npost = len(r['data']['children'])
+        xpost = random.randint(1,npost)
+        tits = r['data']['children'][xpost]['data']['url']
+        return tits
+    except KeyError and TypeError:
+        return "Some Error"
+
+#############################################
 # Handlers                                  #
 #############################################
 @bot.message_handler(commands=['urbdict'])
@@ -132,22 +170,6 @@ def command_bash(m):
     else:
         bot.send_message(cid, "example: /bash echo")
 
-@bot.message_handler(commands=['g'])
-def command_g(m):
-    cid = m.chat.id
-    quest = m.text.strip("/g").replace(" ", "+")
-    if quest:
-        google = "http://www.google.com/search?hl=en&safe=off&q=" + quest[1::]
-        r = requests.get('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=%s'%(quest[1::]))
-        rest = r.json()
-        try:
-            x2 = rest['responseData']['results'][1]['content']+"\n"+google
-            bot.send_message(cid, x2, parse_mode="html", disable_web_page_preview=True)
-        except IndexError:
-            bot.reply_to(m, "Mala consulta")
-    else:
-        bot.send_message(cid, "example: /g cats")
-
 @bot.message_handler(commands=['wiki'])
 def command_wiki(m):
     baseurl = 'http://es.wikipedia.org/w/api.php'
@@ -168,6 +190,19 @@ def command_wiki(m):
             bot.reply_to(m, "Mala consulta")
     else:
         bot.send_message(cid, "example: /wiki cats")
+
+@bot.message_handler(commands=['tits'])
+def command_tits(m):
+    cid = m.chat.id
+    tits = Reddits('tits')
+    bot.send_message(cid, tits, disable_web_page_preview=True)
+
+@bot.message_handler(commands=['wallpapers'])
+def command_wallpapers(m):
+    cid = m.chat.id
+    wall = Reddits('wallpapers')
+    bot.send_message(cid, wall, disable_web_page_preview=True)
+
 
 #############################################
 # peticion
