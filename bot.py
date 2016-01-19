@@ -49,7 +49,6 @@ def GetJson(url):
     except requests.exceptions.RequestException:
         return "requests error"
 
-
 #############################################
 # ¿?                                        #
 #############################################
@@ -57,7 +56,6 @@ def Reddits(key):
     r = 'https://www.reddit.com'
     urls = {}
     urls['asians_gif'] = '/r/asian_gifs/.json?limit=100'
-    urls['random'] = '/r/legalteens+nipples+gonewild+nsfw+nsfw_gif+tits+realgirls/.json?limit=100'
     urls['anal'] = '/r/anal/.json?limit=100'
     urls['asianhotties'] = '/r/asianhotties/.json?limit=100'
     urls['AsiansGoneWild'] = '/r/AsiansGoneWild/.json?limit=100'
@@ -65,8 +63,6 @@ def Reddits(key):
     urls['wallpapers'] = '/r/wallpapers/.json?limit=100'
     if key in urls.keys():
         url = r+urls[key]
-    else:
-        url = r+urls[random.choice(list(urls.keys()))]
     r = GetJson(url)
     try:
         npost = len(r['data']['children'])
@@ -199,18 +195,41 @@ def command_wiki(m):
     else:
         bot.send_message(cid, "example: /wiki cats")
 
-@bot.message_handler(commands=['tits'])
-def command_tits(m):
+@bot.message_handler(commands=['asian_gif'])
+def command_assian_gifs(m):
     cid = m.chat.id
-    tits = Reddits('tits')
-    bot.send_message(cid, tits, disable_web_page_preview=True)
+    tits = Reddits('asians_gif')
+    bot.send_message(cid, tits)
+
+@bot.message_handler(commands=['asianhotties'])
+def command_assianhotties(m):
+    cid = m.chat.id
+    tits = Reddits('asianhotties')
+    bot.send_message(cid, tits)
+
+@bot.message_handler(commands=['AsiansGoneWild'])
+def command_AsiansGoneWild(m):
+    cid = m.chat.id
+    tits = Reddits('AsiansGoneWild')
+    bot.send_message(cid, tits)
+
+@bot.message_handler(commands=['anal'])
+def command_anal(m):
+    cid = m.chat.id
+    tits = Reddits('anal')
+    bot.send_message(cid, tits)
+
+@bot.message_handler(commands=['RealGirls'])
+def command_RealGirls(m):
+    cid = m.chat.id
+    tits = Reddits('RealGirls')
+    bot.send_message(cid, tits)
 
 @bot.message_handler(commands=['wallpapers'])
 def command_wallpapers(m):
     cid = m.chat.id
     wall = Reddits('wallpapers')
-    bot.send_message(cid, wall, disable_web_page_preview=True)
-
+    bot.send_message(cid, wall)
 
 #############################################
 # peticion
