@@ -17,3 +17,9 @@ fun :D
 * /thread - go to thread from mediavida
 * /wiki - search in wikipedia
 * /urbdict - search in urbandictionary
+* /asian_gif
+* /asianhotties
+* /AsiansGoneWild
+* /anal
+* /RealGirls
+* /wallpapers
