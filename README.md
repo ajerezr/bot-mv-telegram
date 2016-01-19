@@ -15,5 +15,5 @@ fun :D
 * /bash <command> - show info about bash command
 * /repo - this repo
 * /thread - go to thread from mediavida
-* /g - search in google
 * /wiki - search in wikipedia
+* /urbdict - search in urbandictionary
