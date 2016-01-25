@@ -10,7 +10,6 @@ fun :D
 * /boobs - show boobs
 * /butt - show butts
 * /imb - search in imdb
-* /tits - show tits from reddit
 * /wallpapers - show wallpaper from reddit
 * /bash <command> - show info about bash command
 * /repo - this repo
@@ -22,4 +21,3 @@ fun :D
 * /AsiansGoneWild
 * /anal
 * /RealGirls
-* /wallpapers
