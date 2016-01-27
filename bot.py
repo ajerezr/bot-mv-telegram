@@ -38,6 +38,23 @@ def listener(messages):
 bot.set_update_listener(listener)
 
 #############################################
+# Return message                            #
+#############################################
+
+def nsfw(cid, uid, chattype, msg):
+  if chattype == "group":
+    bot.send_photo(uid, msg)
+  else:
+    bot.send_photo(cid, msg)
+
+def nsfwReddit(cid, uid, chattype, msg):
+  if chattype == "group":
+    bot.send_message(uid, msg)
+  else:
+    bot.send_message(cid, msg)
+
+
+#############################################
 # Handlers                                  #
 #############################################
 @bot.message_handler(commands=['windows'])
@@ -66,23 +83,27 @@ def command_imdb(m):
 @bot.message_handler(commands=['butts'])
 def command_butts(m):
     cid = m.chat.id
+    uid = m.from_user.id
+    chattype = m.chat.type
     number = random.randint(1, 3000)
     text = Butts(number)
     with open(str(number)+'.jpg', 'wb') as photo:
        photo.write(requests.get(text).content)
     photo = open(str(number)+'.jpg', 'rb')
-    bot.send_photo (cid, photo)
+    nsfw(cid, uid, chattype, photo)
     os.remove(str(number)+'.jpg')
 
 @bot.message_handler(commands=['boobs'])
 def command_boobs(m):
     cid = m.chat.id
+    uid = m.from_user.id
+    chattype = m.chat.type
     number = random.randint(1, 3000)
     text = Boobs(number)
     with open(str(number)+'.jpg', 'wb') as photo:
        photo.write(requests.get(text).content)
     photo = open(str(number)+'.jpg', 'rb')
-    bot.send_photo (cid, photo)
+    nsfw(cid, uid, chattype, photo)
     os.remove(str(number)+'.jpg')
 
 @bot.message_handler(commands=['urbdict'])
@@ -106,36 +127,47 @@ def command_wiki(m):
 @bot.message_handler(commands=['asian_gif'])
 def command_assian_gifs(m):
     cid = m.chat.id
+    uid = m.from_user.id
+    chattype = m.chat.type
     tits = Reddits('asians_gif')
-    bot.send_message(cid, tits)
+    nsfwReddit(cid, uid, chattype, tits)
 
 @bot.message_handler(commands=['asianhotties'])
 def command_assianhotties(m):
     cid = m.chat.id
+    uid = m.from_user.id
     tits = Reddits('asianhotties')
-    bot.send_message(cid, tits)
+    nsfwReddit(cid, uid, chattype, tits)
 
 @bot.message_handler(commands=['AsiansGoneWild'])
 def command_AsiansGoneWild(m):
     cid = m.chat.id
+    uid = m.from_user.id
+    chattype = m.chat.type
     tits = Reddits('AsiansGoneWild')
-    bot.send_message(cid, tits)
+    nsfwReddit(cid, uid, chattype, tits)
 
 @bot.message_handler(commands=['anal'])
 def command_anal(m):
     cid = m.chat.id
+    uid = m.from_user.id
+    chattype = m.chat.type
     tits = Reddits('anal')
-    bot.send_message(cid, tits)
+    nsfwReddit(cid, uid, chattype, tits)
 
 @bot.message_handler(commands=['RealGirls'])
 def command_RealGirls(m):
     cid = m.chat.id
+    uid = m.from_user.id
+    chattype = m.chat.type
     tits = Reddits('RealGirls')
-    bot.send_message(cid, tits)
+    nsfwReddit(cid, uid, chattype, tits)
 
 @bot.message_handler(commands=['wallpapers'])
 def command_wallpapers(m):
     cid = m.chat.id
+    uid = m.from_user.id
+    chattype = m.chat.type
     wall = Reddits('wallpapers')
     bot.send_message(cid, wall)
 
