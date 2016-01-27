@@ -136,6 +136,7 @@ def command_assian_gifs(m):
 def command_assianhotties(m):
     cid = m.chat.id
     uid = m.from_user.id
+    chattype = m.chat.type
     tits = Reddits('asianhotties')
     nsfwReddit(cid, uid, chattype, tits)
 
