@@ -42,17 +42,17 @@ bot.set_update_listener(listener)
 #############################################
 
 def nsfw(cid, uid, chattype, msg):
-  if chattype == "group":
-    bot.send_photo(uid, msg)
-  elif chattype == "supergroup":
+  # if chattype == "group":
+  #   bot.send_photo(uid, msg)
+  if chattype == "supergroup":
     bot.send_message(uid, msg)
   else:
     bot.send_photo(cid, msg)
 
 def nsfwReddit(cid, uid, chattype, msg):
-  if chattype == "group":
-    bot.send_message(uid, msg)
-  elif chattype == "supergroup":
+  # if chattype == "group":
+  #   bot.send_message(uid, msg)
+  if chattype == "supergroup":
     bot.send_message(uid, msg)
   else:
     bot.send_message(cid, msg)
