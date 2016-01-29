@@ -42,20 +42,22 @@ bot.set_update_listener(listener)
 #############################################
 
 def nsfw(cid, uid, chattype, msg):
-  # if chattype == "group":
-  #   bot.send_photo(uid, msg)
-  if chattype == "supergroup":
-    bot.send_message(uid, msg)
+  if chattype == "group":
+    bot.send_photo(uid, msg)
   else:
-    bot.send_photo(cid, msg)
+    if chattype == "supergroup":
+      bot.send_photo(uid, msg)
+    else:
+      bot.send_photo(cid, msg)
 
 def nsfwReddit(cid, uid, chattype, msg):
-  # if chattype == "group":
-  #   bot.send_message(uid, msg)
-  if chattype == "supergroup":
+  if chattype == "group":
     bot.send_message(uid, msg)
   else:
-    bot.send_message(cid, msg)
+    if chattype == "supergroup":
+      bot.send_message(uid, msg)
+    else:
+      bot.send_message(cid, msg)
 
 
 #############################################
@@ -144,7 +146,7 @@ def command_assianhotties(m):
     tits = Reddits('asianhotties')
     nsfwReddit(cid, uid, chattype, tits)
 
-@bot.message_handler(commands=['AsiansGoneWild'])
+@bot.message_handler(commands=['asiansgonewild'])
 def command_AsiansGoneWild(m):
     cid = m.chat.id
     uid = m.from_user.id
@@ -160,7 +162,7 @@ def command_anal(m):
     tits = Reddits('anal')
     nsfwReddit(cid, uid, chattype, tits)
 
-@bot.message_handler(commands=['RealGirls'])
+@bot.message_handler(commands=['realgirls'])
 def command_RealGirls(m):
     cid = m.chat.id
     uid = m.from_user.id
