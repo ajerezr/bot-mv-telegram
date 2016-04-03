@@ -17,7 +17,10 @@ from modules.xtuff import Boobs,Butts
 from modules.imdb import Imdb
 from modules.tools import ChatUserName
 
-bot = telebot.TeleBot(config.token())
+if(config.getToken()==None):
+    print("No token set for the bot. Please set a token in the config.py file.")
+    exit(1)
+bot = telebot.TeleBot(config.getToken())
 
 #############################################
 # loger                                     #
@@ -31,7 +34,11 @@ def listener(messages):
         username = ChatUserName(m)
         #[time][cid][chat_type][chat_title][username][m.text]
         mensaje = ("[%s][%s][%s][%s][%s][%s]"%(now,cid,chat_type,chat_title,username,m.text))
-        f = open( 'files/log', 'a')
+        log_path = 'files/'
+        log_file = "log"
+        if(not os.path.isdir(log_path)):
+            os.makedirs(log_path)
+        f = open(log_path+log_file , 'a')
         f.write(mensaje + "\n")
         f.close()
 
@@ -80,7 +87,7 @@ def command_repo(m):
     msg = '[Repositorio en Github](https://github.com/ajerezr/bot-mv-telegram)'
     bot.send_message(cid, msg, parse_mode="Markdown")
 
-@bot.message_handler(commands=['imb'])
+@bot.message_handler(commands=['imdb'])
 def command_imdb(m):
     cid = m.chat.id
     msg = Imdb(m)
