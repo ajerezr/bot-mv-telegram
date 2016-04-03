@@ -16,12 +16,13 @@ from modules.urbdict import Urbdict
 from modules.xtuff import Boobs,Butts
 from modules.imdb import Imdb
 from modules.tools import ChatUserName
+from modules.uptime import uptime_string
 
 if(config.getToken()==None):
     print("No token set for the bot. Please set a token in the config.py file.")
     exit(1)
 bot = telebot.TeleBot(config.getToken())
-
+start_time = time.time()
 #############################################
 # loger                                     #
 #############################################
@@ -184,6 +185,14 @@ def command_wallpapers(m):
     chattype = m.chat.type
     wall = Reddits('wallpapers')
     bot.send_message(cid, wall)
+
+@bot.message_handler(commands=['uptime'])
+def command_wallpapers(m):
+    cid = m.chat.id
+    uid = m.from_user.id
+    chattype = m.chat.type
+    message = uptime_string(start_time)
+    bot.send_message(cid, message)
 
 #############################################
 # peticion

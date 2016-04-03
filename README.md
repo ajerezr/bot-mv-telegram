@@ -22,3 +22,4 @@ fun :D
 * /asiansgonewild - ermagehrz
 * /anal - if you like backdoors
 * /realgirls - 100% machism free
+* /uptime - Bot and server info
