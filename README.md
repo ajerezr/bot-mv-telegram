@@ -1,7 +1,8 @@
 ### Install
 ```sh
-$ git clone git clone https://github.com/ajerezr/bot-mv-telegram.git
-$ pip install requierements.txt
+$ git clone https://github.com/ajerezr/bot-mv-telegram.git
+$ cd bot-mv-telegram
+$ sudo pip install requirements.txt
 $ python bot.py
 ```
 fun :D
