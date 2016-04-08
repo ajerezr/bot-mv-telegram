@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import telebot
 import time
@@ -6,6 +7,7 @@ import os
 import tempfile
 import random
 import requests
+import traceback
 from telebot import types
 from telebot import util
 from datetime import datetime
@@ -18,11 +20,14 @@ from modules.imdb import Imdb
 from modules.tools import ChatUserName
 from modules.uptime import uptime_string
 
+os.chdir(os.path.dirname(os.path.realpath(__file__))) 
+
 if(config.getToken()==None):
     print("No token set for the bot. Please set a token in the config.py file.")
     exit(1)
 bot = telebot.TeleBot(config.getToken())
 start_time = time.time()
+last_error_time = None
 #############################################
 # loger                                     #
 #############################################
@@ -191,7 +196,7 @@ def command_wallpapers(m):
     cid = m.chat.id
     uid = m.from_user.id
     chattype = m.chat.type
-    message = uptime_string(start_time)
+    message = uptime_string(start_time,last_error_time)
     bot.send_message(cid, message)
 
 #############################################
@@ -199,4 +204,11 @@ def command_wallpapers(m):
 #############################################
 # Con esto, le decimos al bot que siga funcionando
 # incluso si encuentra algún fallo.
-bot.polling(none_stop=True)
+try:
+    bot.polling(none_stop=True)
+except Exception as e:
+    last_error_time = time.time()
+    traceback.print_tb(e.__traceback__)
+
+while True:
+    pass
