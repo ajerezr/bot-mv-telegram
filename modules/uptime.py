@@ -15,7 +15,7 @@ def uptime_string(startup_time_in_seconds,last_error_time):
 	delta = now-startup_time_in_seconds
 	bot_uptime = str(timedelta(seconds=int(delta)))
 	
-	string="\U0001F4BB Running on "+uname[0]+" "+uname[2]+" "+uname[4]+"\n \U0000231B Machine Uptime: "+uptime_string+"\n\U0001F916 Bot uptime: "+bot_uptime
+	string="\U0001F4BB Running on "+uname[0]+" "+uname[2]+" "+uname[4]+"\n\U0000231B Machine Uptime: "+uptime_string+"\n\U0001F916 Bot uptime: "+bot_uptime
 
 	if(last_error_time!=None):
 		delta = now-last_error_time

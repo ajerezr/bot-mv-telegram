@@ -1,5 +1,6 @@
 from modules.tools import GetJson
 import random
+import threading
 
 def Reddits(key):
     r = 'https://www.reddit.com'
@@ -12,11 +13,20 @@ def Reddits(key):
     urls['wallpapers'] = '/r/wallpapers/.json?limit=100'
     if key in urls.keys():
         url = r+urls[key]
-    r = GetJson(url)
     try:
+        print("Getting "+url)
+        r = GetJson(url)
         npost = len(r['data']['children'])
         xpost = random.randint(1,npost)
         tits = r['data']['children'][xpost]['data']['url']
         return tits
-    except KeyError and TypeError:
-        return "Some Error"
+    except KeyError and TypeError and Exception as e:
+        return "An error ocurred :(",e
+
+def AsyncReddits(key,cid,bot):
+    t = threading.Thread(target=__AsyncReddits,args=(key,cid,bot))
+    t.start()
+
+def __AsyncReddits(key,cid,bot):
+    result = Reddits(key)
+    bot.send_message(cid,result)

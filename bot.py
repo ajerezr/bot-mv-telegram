@@ -12,6 +12,7 @@ from telebot import types
 from telebot import util
 from datetime import datetime
 from modules.wiki import Wiki
+from modules.reddit import AsyncReddits
 from modules.reddit import Reddits
 from modules.bash import Bash
 from modules.urbdict import Urbdict
@@ -25,7 +26,8 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 if(config.getToken()==None):
     print("No token set for the bot. Please set a token in the config.py file.")
     exit(1)
-bot = telebot.TeleBot(config.getToken())
+#bot = telebot.TeleBot(config.getToken())
+bot = telebot.AsyncTeleBot(config.getToken())
 start_time = time.time()
 last_error_time = None
 #############################################
@@ -188,11 +190,10 @@ def command_wallpapers(m):
     cid = m.chat.id
     uid = m.from_user.id
     chattype = m.chat.type
-    wall = Reddits('wallpapers')
-    bot.send_message(cid, wall)
+    AsyncReddits('wallpapers',cid,bot)
 
 @bot.message_handler(commands=['uptime'])
-def command_wallpapers(m):
+def command_uptime(m):
     cid = m.chat.id
     uid = m.from_user.id
     chattype = m.chat.type
@@ -204,11 +205,4 @@ def command_wallpapers(m):
 #############################################
 # Con esto, le decimos al bot que siga funcionando
 # incluso si encuentra algún fallo.
-try:
-    bot.polling(none_stop=True)
-except Exception as e:
-    last_error_time = time.time()
-    traceback.print_tb(e.__traceback__)
-
-while True:
-    pass
+bot.polling(none_stop=True)
