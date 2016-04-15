@@ -95,6 +95,7 @@ def command_thread(m):
 @async()
 def command_repo(m):
     cid = m.chat.id
+    bot.send_chat_action(cid, "typing")
     msg = '[Repositorio en Github](https://github.com/ajerezr/bot-mv-telegram)'
     bot.send_message(cid, msg, parse_mode="Markdown")
 
@@ -102,6 +103,7 @@ def command_repo(m):
 @async()
 def command_imdb(m):
     cid = m.chat.id
+    bot.send_chat_action(cid, "typing")
     msg = Imdb(m)
     bot.send_message(cid, msg, parse_mode="Markdown")
 
@@ -110,6 +112,7 @@ def command_imdb(m):
 def command_butts(m):
     cid = m.chat.id
     uid = m.from_user.id
+    bot.send_chat_action(cid, "upload_photo")
     chattype = m.chat.type
     number = random.randint(1, 3000)
     text = Butts(number)
@@ -124,6 +127,7 @@ def command_butts(m):
 def command_boobs(m):
     cid = m.chat.id
     uid = m.from_user.id
+    bot.send_chat_action(cid, "upload_photo")
     chattype = m.chat.type
     number = random.randint(1, 3000)
     text = Boobs(number)
@@ -137,6 +141,7 @@ def command_boobs(m):
 @async()
 def command_urbdict(m):
     cid = m.chat.id
+    bot.send_chat_action(cid, "typing")
     urb = Urbdict(m)
     bot.send_message(cid, urb)
 
@@ -144,6 +149,7 @@ def command_urbdict(m):
 @async()
 def command_bash(m):
     cid = m.chat.id
+    bot.send_chat_action(cid, "typing")
     cmd = Bash(m)
     bot.send_message(cid, cmd, parse_mode= 'Markdown')
 
@@ -151,6 +157,7 @@ def command_bash(m):
 @async()
 def command_wiki(m):
     cid = m.chat.id
+    bot.send_chat_action(cid, "typing")
     wikipedia = Wiki(m)
     bot.send_message(cid, wikipedia)
 
@@ -160,6 +167,7 @@ def command_assian_gifs(m):
     cid = m.chat.id
     uid = m.from_user.id
     chattype = m.chat.type
+    bot.send_chat_action(cid, "upload_photo")
     tits = Reddits('asians_gif')
     nsfwReddit(cid, uid, chattype, tits)
 
@@ -169,6 +177,7 @@ def command_assianhotties(m):
     cid = m.chat.id
     uid = m.from_user.id
     chattype = m.chat.type
+    bot.send_chat_action(cid, "upload_photo")
     tits = Reddits('asianhotties')
     nsfwReddit(cid, uid, chattype, tits)
 
@@ -178,6 +187,7 @@ def command_AsiansGoneWild(m):
     cid = m.chat.id
     uid = m.from_user.id
     chattype = m.chat.type
+    bot.send_chat_action(cid, "upload_photo")
     tits = Reddits('AsiansGoneWild')
     nsfwReddit(cid, uid, chattype, tits)
 
@@ -187,6 +197,7 @@ def command_anal(m):
     cid = m.chat.id
     uid = m.from_user.id
     chattype = m.chat.type
+    bot.send_chat_action(cid, "upload_photo")
     tits = Reddits('anal')
     nsfwReddit(cid, uid, chattype, tits)
 
@@ -196,6 +207,7 @@ def command_RealGirls(m):
     cid = m.chat.id
     uid = m.from_user.id
     chattype = m.chat.type
+    bot.send_chat_action(cid, "upload_photo")
     tits = Reddits('RealGirls')
     nsfwReddit(cid, uid, chattype, tits)
 
@@ -205,6 +217,7 @@ def command_fitnessgirls(m):
     cid = m.chat.id
     uid = m.from_user.id
     chattype = m.chat.type
+    bot.send_chat_action(cid, "upload_photo")
     tits = Reddits('JustFitnessGirls')
     nsfwReddit(cid, uid, chattype, tits)
 
@@ -214,6 +227,7 @@ def command_nsfwfitnessgirls(m):
     cid = m.chat.id
     uid = m.from_user.id
     chattype = m.chat.type
+    bot.send_chat_action(cid, "upload_photo")
     tits = Reddits('HotForFitness')
     nsfwReddit(cid, uid, chattype, tits)
 
@@ -233,6 +247,7 @@ def command_wallpapers(m):
 def command_uptime(m):
     cid = m.chat.id
     uid = m.from_user.id
+    bot.send_chat_action(cid, "typing")
     chattype = m.chat.type
     message = uptime_string(start_time)
     bot.send_message(cid, message)
