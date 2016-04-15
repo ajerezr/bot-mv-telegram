@@ -11,6 +11,8 @@ def Reddits(key):
     urls['AsiansGoneWild'] = '/r/AsiansGoneWild/.json?limit=100'
     urls['RealGirls'] = '/r/RealGirls/.json?limit=100'
     urls['wallpapers'] = '/r/wallpapers/.json?limit=100'
+    urls['JustFitnessGirls'] = '/r/JustFitnessGirls/.json?limit=100'
+    urls['HotForFitness'] = '/r/HotForFitness/.json?limit=100'
     if key in urls.keys():
         url = r+urls[key]
     try:

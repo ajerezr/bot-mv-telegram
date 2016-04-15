@@ -199,6 +199,26 @@ def command_RealGirls(m):
     tits = Reddits('RealGirls')
     nsfwReddit(cid, uid, chattype, tits)
 
+@bot.message_handler(commands=['fitnessgirls'])
+@async()
+def command_fitnessgirls(m):
+    cid = m.chat.id
+    uid = m.from_user.id
+    chattype = m.chat.type
+    tits = Reddits('JustFitnessGirls')
+    nsfwReddit(cid, uid, chattype, tits)
+
+@bot.message_handler(commands=['nsfwfitnessgirls'])
+@async()
+def command_nsfwfitnessgirls(m):
+    cid = m.chat.id
+    uid = m.from_user.id
+    chattype = m.chat.type
+    tits = Reddits('HotForFitness')
+    nsfwReddit(cid, uid, chattype, tits)
+
+
+
 @bot.message_handler(commands=['wallpapers'])
 @async()
 def command_wallpapers(m):
