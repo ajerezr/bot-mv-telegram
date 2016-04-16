@@ -218,20 +218,8 @@ def command_fitnessgirls(m):
     uid = m.from_user.id
     chattype = m.chat.type
     bot.send_chat_action(cid, "upload_photo")
-    tits = Reddits('JustFitnessGirls')
+    tits = Reddits('JustFitnessGirls','HotForFitness')
     nsfwReddit(cid, uid, chattype, tits)
-
-@bot.message_handler(commands=['nsfwfitnessgirls'])
-@async()
-def command_nsfwfitnessgirls(m):
-    cid = m.chat.id
-    uid = m.from_user.id
-    chattype = m.chat.type
-    bot.send_chat_action(cid, "upload_photo")
-    tits = Reddits('HotForFitness')
-    nsfwReddit(cid, uid, chattype, tits)
-
-
 
 @bot.message_handler(commands=['wallpapers'])
 @async()

@@ -1,12 +1,15 @@
 import requests
 
-def GetJson(url, param=None):
+def GetJson(url, param=None, queue=None):
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'}
     try:
         rest = requests.get(url, params=param, headers=headers)
-        return rest.json()
+        if(queue!=None):
+            queue.put(rest.json())
+        else:
+            return rest.json()
     except requests.exceptions.RequestException:
-        return "requests error"
+        return "request error"
 
 def GetHtml(url):
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'}
@@ -14,7 +17,7 @@ def GetHtml(url):
         html = requests.get(url, headers=headers)
         return html
     except requests.exceptions.RequestException:
-        return "requests error"
+        return "request error"
 
 def ChatUserName(m):
     cid = m.chat.id
