@@ -1,5 +1,6 @@
 from modules.tools import GetJson
 import random
+import threading
 
 def Reddits(key):
     r = 'https://www.reddit.com'
@@ -12,11 +13,11 @@ def Reddits(key):
     urls['wallpapers'] = '/r/wallpapers/.json?limit=100'
     if key in urls.keys():
         url = r+urls[key]
-    r = GetJson(url)
     try:
+        r = GetJson(url)
         npost = len(r['data']['children'])
         xpost = random.randint(1,npost)
-        tits = r['data']['children'][xpost]['data']['url']
-        return tits
-    except KeyError and TypeError:
-        return "Some Error"
+        content = r['data']['children'][xpost]['data']['url']
+        return content
+    except KeyError and TypeError and Exception as e:
+        return "An error ocurred :(",e
