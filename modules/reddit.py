@@ -2,6 +2,8 @@ from modules.tools import GetJson
 import random
 import threading
 
+data = []
+
 def Reddits(key):
     r = 'https://www.reddit.com'
     urls = {}
@@ -13,11 +15,15 @@ def Reddits(key):
     urls['wallpapers'] = '/r/wallpapers/.json?limit=100'
     if key in urls.keys():
         url = r+urls[key]
-    try:
-        r = GetJson(url)
-        npost = len(r['data']['children'])
-        xpost = random.randint(1,npost)
-        content = r['data']['children'][xpost]['data']['url']
-        return content
-    except KeyError and TypeError and Exception as e:
-        return "An error ocurred :(",e
+
+        try:
+            if data:
+                return data.pop()
+
+            r = GetJson(url)
+            for post in r['data']['children']:
+                data.append(post['data']['url'])
+
+            return data.pop()
+        except KeyError and TypeError and Exception as e:
+            return "An error ocurred :(",e
