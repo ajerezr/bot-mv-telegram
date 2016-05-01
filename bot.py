@@ -19,18 +19,26 @@ from modules.xtuff import Boobs,Butts
 from modules.imdb import Imdb
 from modules.tools import ChatUserName
 from modules.uptime import uptime_string
+from modules.weather import weather
 
-os.chdir(os.path.dirname(os.path.realpath(__file__))) 
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 if(config.getToken()==None):
     print("No token set for the bot. Please set a token in the config.py file.")
     exit(1)
+
+#Make the temporal folder
+if not os.path.isdir('files/temp/'):
+    os.makedirs('files/temp/')
+
 #bot = telebot.TeleBot(config.getToken())
 bot = telebot.AsyncTeleBot(config.getToken())
 start_time = time.time()
+
 #############################################
 # loger                                     #
 #############################################
+
 def listener(messages):
     for m in messages:
         cid = m.chat.id
@@ -54,7 +62,6 @@ bot.set_update_listener(listener)
 # Return message                            #
 #############################################
 
-
 def nsfw(cid, uid, chattype, msg):
   if chattype == "group":
     bot.send_photo(uid, msg)
@@ -63,7 +70,6 @@ def nsfw(cid, uid, chattype, msg):
       bot.send_photo(uid, msg)
     else:
       bot.send_photo(cid, msg)
-
 
 def nsfwReddit(cid, uid, chattype, msg):
   if chattype == "group":
@@ -74,10 +80,10 @@ def nsfwReddit(cid, uid, chattype, msg):
     else:
       bot.send_message(cid, msg)
 
-
 #############################################
 # Handlers                                  #
 #############################################
+
 @bot.message_handler(commands=['windows'])
 @async()
 def command_windows(m):
@@ -216,6 +222,27 @@ def command_uptime(m):
     chattype = m.chat.type
     message = uptime_string(start_time)
     bot.send_message(cid, message)
+
+@bot.message_handler(commands=['w'])
+@async()
+def command_weather(m):
+    cid = m.chat.id
+    uid = m.from_user.id
+    chattype = m.chat.type
+    query = m.text.strip("/w ")
+    to_user= uid if chattype in ("group","supergroup") else cid
+    if query:
+        msg = weather(query)
+        if msg['status']:
+            bot.send_message(to_user, msg['status'])
+        elif msg['error']:
+            bot.send_message(to_user, msg['error'])
+        else:
+            with open(msg['plot'],'rb') as plot:
+                bot.send_message(to_user, msg['txt'],parse_mode="Markdown")
+                bot.send_photo(to_user, plot)
+    else:
+        bot.send_message(to_user, "Example: /wheat Berlin")
 
 #############################################
 # peticion
