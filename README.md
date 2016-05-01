@@ -2,7 +2,14 @@
 ```sh
 $ git clone https://github.com/ajerezr/bot-mv-telegram.git
 $ cd bot-mv-telegram
-$ sudo pip install requirements.txt
+$ sudo pip install -r requirements.txt
+$ #Now install matplotlib for weather Module
+$ #http://matplotlib.org/users/installing.html
+$ #For Debian / Ubuntu :
+$    sudo apt-get install python-matplotlib
+$ #For Fedora / Redhat :
+$    sudo yum install python-matplotlib
+$ #All ready!
 $ python bot.py
 ```
 fun :D
@@ -23,3 +30,4 @@ fun :D
 * /anal - if you like backdoors
 * /realgirls - 100% machism free
 * /uptime - Bot and server info
+* /w - search weather prevision and plot data

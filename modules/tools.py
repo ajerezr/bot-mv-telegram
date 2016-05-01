@@ -1,4 +1,5 @@
 import requests
+import unicodedata
 
 def GetJson(url, param=None):
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'}
@@ -22,3 +23,7 @@ def ChatUserName(m):
         return m.chat.first_name
     else:
         return m.from_user.first_name
+
+def Strip_accents(s):
+    #http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
+    return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
