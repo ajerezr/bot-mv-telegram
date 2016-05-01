@@ -34,6 +34,7 @@ if not os.path.isdir('files/temp/'):
 bot = telebot.TeleBot(config.getToken())
 #bot = telebot.AsyncTeleBot(config.getToken())
 start_time = time.time()
+last_error_time = None
 #############################################
 # loger                                     #
 #############################################
@@ -264,7 +265,7 @@ def command_weather(m):
                 bot.send_message(to_user, msg['txt'],parse_mode="Markdown")
                 bot.send_photo(to_user, plot)
     else:
-        bot.send_message(to_user, "Example: /wheat Berlin")
+        bot.send_message(to_user, "Example: /w Berlin")
 
 #############################################
 # peticion
