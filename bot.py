@@ -25,9 +25,10 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 if(config.getToken()==None):
     print("No token set for the bot. Please set a token in the config.py file.")
     exit(1)
-#bot = telebot.TeleBot(config.getToken())
-bot = telebot.AsyncTeleBot(config.getToken())
+bot = telebot.TeleBot(config.getToken())
+#bot = telebot.AsyncTeleBot(config.getToken())
 start_time = time.time()
+last_error_time = None
 #############################################
 # loger                                     #
 #############################################
@@ -237,7 +238,7 @@ def command_uptime(m):
     uid = m.from_user.id
     bot.send_chat_action(cid, "typing")
     chattype = m.chat.type
-    message = uptime_string(start_time)
+    message = uptime_string(start_time,last_error_time)
     bot.send_message(cid, message)
 
 #############################################
@@ -245,4 +246,10 @@ def command_uptime(m):
 #############################################
 # Con esto, le decimos al bot que siga funcionando
 # incluso si encuentra algún fallo.
-bot.polling(none_stop=True)
+while True:
+    try:
+        bot.polling(none_stop=True)
+    except Exception as e:
+        last_error_time = time.time()
+        traceback.print_tb(e.__traceback__)
+

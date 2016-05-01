@@ -31,7 +31,6 @@ def Reddits(*keys):
             result=q.get()
             data.extend(result['data']['children'])
         npost = len(data)
-        print(npost)
         xpost = random.randint(1,npost)
         content = data[xpost]['data']['url']
         return content
