@@ -18,6 +18,7 @@ fun :D
 * /boobs - show boobs
 * /butts - show butts
 * /imdb - search in imdb
+* /fa - search in FilmAffinity(es)
 * /wallpapers - show wallpaper from reddit
 * /bash <command> - show info about bash command
 * /repo - this repo
