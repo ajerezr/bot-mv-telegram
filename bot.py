@@ -17,6 +17,7 @@ from modules.bash import Bash
 from modules.urbdict import Urbdict
 from modules.xtuff import Boobs,Butts
 from modules.imdb import Imdb
+from modules.fa import FiAf
 from modules.tools import ChatUserName
 from modules.uptime import uptime_string
 from modules.weather import weather
@@ -112,6 +113,16 @@ def command_imdb(m):
     bot.send_chat_action(cid, "typing")
     msg = Imdb(m)
     bot.send_message(cid, msg, parse_mode="Markdown")
+
+@bot.message_handler(commands=['fa'])
+@async()
+def command_fa(m):
+    cid = m.chat.id
+    msg = FiAf(m.text.replace("/fa ","").strip()) #.replace("@bmanbot","")
+    if msg["error"]:
+        bot.send_message(cid, msg['error'], parse_mode="Markdown")
+    else:
+        bot.send_message(cid, msg['Msg'], parse_mode="Markdown")
 
 @bot.message_handler(commands=['butts'])
 @async()
@@ -278,4 +289,3 @@ while True:
     except Exception as e:
         last_error_time = time.time()
         traceback.print_tb(e.__traceback__)
-
