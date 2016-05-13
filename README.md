@@ -16,7 +16,7 @@ fun :D
 
 ### Commands
 * /boobs - show boobs
-* /butt - show butts
+* /butts - show butts
 * /imdb - search in imdb
 * /wallpapers - show wallpaper from reddit
 * /bash <command> - show info about bash command
@@ -29,5 +29,6 @@ fun :D
 * /asiansgonewild - ermagehrz
 * /anal - if you like backdoors
 * /realgirls - 100% machism free
+* /fitnessgirls - all glory the fitness girls
 * /uptime - Bot and server info
 * /w - search weather prevision and plot data

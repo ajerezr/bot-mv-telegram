@@ -13,7 +13,7 @@ def memory_usage_ps():
     mem = float(out[1].split()[vsz_index]) / 1024
     return "{0:.2f}".format(mem)
 
-def uptime_string(startup_time_in_seconds):
+def uptime_string(startup_time_in_seconds,last_error_time):
 	#Machine info
 	uname = platform.uname()
 	uptime_seconds = uptime.uptime()
@@ -30,5 +30,12 @@ def uptime_string(startup_time_in_seconds):
 	string+="\U0001F4BB Running on "+uname[0]+" "+uname[2]+" "+uname[4]+"\n"
 	string+="\U0000231B Machine Uptime: "+uptime_string+"\n"
 	string+="\U0001F916 Bot uptime: "+bot_uptime+"\n"
-	string+="\U0001F4CA Bot mem used: "+memory+"Mb"
+	string+="\U0001F4CA Bot memory usage: "+memory+"MB"
+
+	if(last_error_time!=None):
+		delta = now-last_error_time
+		last_error = str(timedelta(seconds=int(delta)))
+		string += "\n\U0001F480 "+last_error+" without casualties"
+
+	
 	return string
