@@ -7,7 +7,6 @@ import subprocess
 import os
 
 def memory_usage_ps():
-    import subprocess
     out = subprocess.Popen(['ps', 'v', '-p', str(os.getpid())],stdout=subprocess.PIPE).communicate()[0].split(b'\n')
     vsz_index = out[0].split().index(b'RSS')
     mem = float(out[1].split()[vsz_index]) / 1024
@@ -37,5 +36,5 @@ def uptime_string(startup_time_in_seconds,last_error_time):
 		last_error = str(timedelta(seconds=int(delta)))
 		string += "\n\U0001F480 "+last_error+" without casualties"
 
-	
+
 	return string
