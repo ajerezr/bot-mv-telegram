@@ -7,14 +7,17 @@ TOKEN = ""
 # Insert key or None for disable this module
 OpenWheatKey = ""
 
-#DomainChecker api key 
+# DomainChecker api key
 DomainKey = ""
+
 
 def getToken():
     return TOKEN
 
+
 def getWheatApiKey():
     return OpenWheatKey
+
 
 def getDomainKey():
     return DomainKey
