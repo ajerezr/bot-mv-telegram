@@ -19,9 +19,9 @@ def Imdb(message):
         actors = info['Actors'] + '\n'
         plot = info['Plot'] + '\n'
         poster = info['Poster']
-        m = m + '*Title:* ' + '[' + title + ']' + '(' + poster + ')' + '\n' + '*Year:* ' + year +\
-               '*Rated:* ' + rated + '*Released:* ' + released + '*Runtime:* ' + runtime + '*Director:* ' +\
-               director + '*Writer:* ' + writer + '*Actors:* ' + actors + '*Plot:* ' + plot
+        m = m + '*Title:* ' + '[' + title + ']' + '(' + poster + ')' + '\n' + '*Year:* ' + year + \
+            '*Rated:* ' + rated + '*Released:* ' + released + '*Runtime:* ' + runtime + '*Director:* ' + \
+            director + '*Writer:* ' + writer + '*Actors:* ' + actors + '*Plot:* ' + plot
         return m
     except KeyError:
         return 'Nope :('

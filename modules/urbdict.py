@@ -7,5 +7,5 @@ def Urbdict(message):
         data = GetJson(url)
         text = data['list'][0]['definition']
         return text
-    except:
+    except Exception:
         return 'Definition too long :<'

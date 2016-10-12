@@ -281,8 +281,8 @@ def command_fitnessgirls(m):
 @async()
 def command_wallpapers(m):
     cid = m.chat.id
-    uid = m.from_user.id
-    chattype = m.chat.type
+    # uid = m.from_user.id
+    # chattype = m.chat.type
     wall = Reddits('wallpapers')
     bot.send_message(cid, wall)
 
@@ -291,9 +291,9 @@ def command_wallpapers(m):
 @async()
 def command_uptime(m):
     cid = m.chat.id
-    uid = m.from_user.id
+    # uid = m.from_user.id
     bot.send_chat_action(cid, "typing")
-    chattype = m.chat.type
+    # chattype = m.chat.type
     message = uptime_string(start_time, last_error_time)
     bot.send_message(cid, message)
 

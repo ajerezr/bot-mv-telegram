@@ -38,7 +38,7 @@ def GetInfoPeli(data):
             'Image': data.find('img', {'itemprop': 'image'})['src']}
     try:
         info['Rating'] = data.find('div', {'id': 'movie-rat-avg'})['content']
-    except:
+    except Exception:
         info['Rating'] = 'NA'
     info['Genre'], info['Actors'] = [], []
     for items in data.find('dt', text='Reparto').findNext('dd'):
@@ -89,7 +89,7 @@ def FiAf(query):
                 d_link_soup = DirectLink(query)
                 info = GetInfoPeli(d_link_soup)
                 msg['Msg'] = FormatMsgInfo(info)
-            except:
+            except Exception:
                 msg['error'] = query + " *Mala consulta*"
         else:
             msg['error'] = query + " *id error*"
