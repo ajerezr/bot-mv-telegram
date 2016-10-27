@@ -34,3 +34,5 @@ fun :D
 * /uptime - Bot and server info
 * /domain - Checks if a given domain is avilable
 * /w - search weather prevision and plot data
+* /windows - vete a la mierda
+* /domain - checks if a given domain is avilable
