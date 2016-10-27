@@ -8,6 +8,7 @@ import random
 import requests
 import traceback
 import logging
+from time import sleep
 from telebot.util import async
 from datetime import datetime
 from modules.wiki import Wiki
@@ -20,7 +21,7 @@ from modules.fa import FiAf
 from modules.tools import ChatUserName
 from modules.uptime import uptime_string
 from modules.weather import weather
-from modules.domain import DomainCheker
+from modules.domain import DomainChecker
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 if config.getToken() is None:
@@ -96,16 +97,16 @@ def nsfwReddit(cid, uid, chattype, msg):
 # Handlers                                  #
 #############################################
 @bot.message_handler(commands=['domain'])
-@async()
 def command_domain(m):
     cid = m.chat.id
-    msg = DomainCheker(m.text.replace("/domain ", "").strip())  # .replace("@bmanbot","")
+    msg = DomainChecker(m.text)
     if msg['msg']:
         bot.send_message(cid, msg['msg'], parse_mode="Markdown", disable_web_page_preview=True)
     elif msg['error']:
         bot.send_message(cid, msg['error'], parse_mode="Markdown")
     elif msg['status']:
         bot.send_message(cid, msg['status'], parse_mode="Markdown")
+    sleep(1)
 
 
 @bot.message_handler(commands=['windows'])

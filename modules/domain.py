@@ -1,31 +1,34 @@
-import subprocess
+import urllib.request
 import json
 from config import getDomainKey
+import re
 
 
-def DomainCheker(x):
+def DomainChecker(x):
     check = "\U00002705"
     nocheck = "\U0000274C"
     msg = {'msg': False, 'status': False, 'error': False}
     key = getDomainKey()
+    regex = "(^|[a-zA-Z0-9@]*\s*)(?P<name>[a-zA-Z0-9_-]+)\.(?P<tld>[a-zA-Z0-9\._-]+)\s*$"
+    USER_AGENT = "unirest-python/1.1.6"
     if key:
-        if len(x.split(".")) > 2:
-            name, dom = x.split(".")[0], x.split(".")[1::]
-            tld = ".".join(value for value in dom)
-        elif len(x.split(".")) == 2:
-            name, tld = x.split(".")
+        url = "https://domainstatus.p.mashape.com/"
+
+        match = re.search(regex, x)
+        if(match):
+            name = match.group('name')
+            tld = match.group('tld')
         else:
             msg['msg'] = "Example: 'google.com','becar.co.uk'"
             return msg
         try:
-            query = '{"name":"' + name + '","tld":"' + tld + '"}'
-            # "curl drama"
-            mierda = "curl -X POST --include 'https://domainstatus.p.mashape.com/' -H 'X-Mashape-Key: " +\
-                     key + "' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-binary '" +\
-                     query + "'"
-            out = repr(
-                subprocess.Popen(mierda, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0])
-            rest = json.loads(out[out.find("{")::].replace("'", ""))
+            dict_payload = {"name":name, "tld":tld} 
+            payload = json.dumps(dict_payload).encode('utf8')
+
+            req = urllib.request.Request(url, method='POST', data=payload, headers={'content-type' : 'application/json', 'X-Mashape-Key': key, "user-agent" : USER_AGENT})
+            response = urllib.request.urlopen(req)
+            response_body = response.read()
+            rest = json.loads(response_body.decode('utf-8'))
             if 'error' in rest.keys() or rest['tld_valid'] is False:
                 msg['msg'] = "Mala consulta"
                 return msg
@@ -37,5 +40,5 @@ def DomainCheker(x):
             msg["error"] = error
             return msg
     else:
-        msg['status'] = "Module Disable"
+        msg['status'] = "Module Disabled"
         return msg
