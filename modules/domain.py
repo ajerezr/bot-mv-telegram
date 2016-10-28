@@ -1,4 +1,5 @@
 import urllib.request
+from urllib.error import HTTPError
 import json
 from config import getDomainKey
 import re
@@ -7,6 +8,7 @@ import re
 def DomainChecker(x):
     check = "\U00002705"
     nocheck = "\U0000274C"
+    fail = "\U0001F4A5"
     msg = {'msg': False, 'status': False, 'error': False}
     key = getDomainKey()
     regex = "(^|[a-zA-Z0-9@]*\s*)(?P<name>[a-zA-Z0-9_-]+)\.(?P<tld>[a-zA-Z0-9\._-]+)\s*$"
@@ -29,16 +31,17 @@ def DomainChecker(x):
             response = urllib.request.urlopen(req)
             response_body = response.read()
             rest = json.loads(response_body.decode('utf-8'))
-            if 'error' in rest.keys() or rest['tld_valid'] is False:
-                msg['msg'] = "Mala consulta"
-                return msg
+            msg['msg'] = "{0} {1} Available".format(rest['domain'], nocheck + " Not" if rest['available'] is False else check)
+        except HTTPError as error: 
+            if(error.code < 500):
+                msg["error"] = fail + " The API rejected your request (HTTP "+str(error.code)
             else:
-                msg['msg'] = "{0} {1} Available".format(rest['domain'],
-                                                        nocheck + " Not" if rest['available'] is False else check)
-                return msg
-        except Exception as error:
-            msg["error"] = error
-            return msg
+                msg["error"] = fail + "API error (HTTP "+str(error.code)
+            msg["error"] += ": "+error.reason+")" if error.reason is not "" else ")"
+        except Exception as e:
+            msg["error"] = e
+
+        return msg
     else:
         msg['status'] = "Module Disabled"
         return msg
