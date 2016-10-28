@@ -1,4 +1,5 @@
 import urllib.request
+from urllib.error import HTTPError
 import json
 from config import getDomainKey
 import re

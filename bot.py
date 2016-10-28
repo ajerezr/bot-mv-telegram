@@ -99,6 +99,7 @@ def nsfwReddit(cid, uid, chattype, msg):
 @bot.message_handler(commands=['domain'])
 def command_domain(m):
     cid = m.chat.id
+    bot.send_chat_action(cid, "typing")
     msg = DomainChecker(m.text)
     if msg['msg']:
         bot.send_message(cid, msg['msg'], parse_mode="Markdown", disable_web_page_preview=True)
