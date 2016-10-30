@@ -7,7 +7,6 @@ import os
 import random
 import requests
 import traceback
-import logging
 from time import sleep
 from telebot.util import async
 from datetime import datetime
@@ -19,12 +18,13 @@ from modules.xtuff import Boobs, Butts
 from modules.imdb import Imdb
 from modules.fa import FiAf
 from modules.tools import ChatUserName
+from modules.tools import get_logger
 from modules.uptime import uptime_string
 from modules.weather import weather
 from modules.domain import DomainChecker
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
-if config.getToken() is None:
+if config.getToken() is None or "":
     print("No token set for the bot. Please set a token in the config.py file.")
     exit(1)
 
@@ -63,12 +63,7 @@ bot.set_update_listener(listener)
 #############################################
 # logging                                  #
 #############################################
-hdlr = logging.FileHandler('files/logging.log')
-hdlr.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-logger = telebot.logger
-telebot.logger.addHandler(hdlr)
-telebot.logger.setLevel(logging.WARNING)
-
+logger = get_logger()
 
 #############################################
 # Return message                            #
@@ -277,7 +272,7 @@ def command_fitnessgirls(m):
     uid = m.from_user.id
     chattype = m.chat.type
     bot.send_chat_action(cid, "upload_photo")
-    tits = Reddits('JustFitnessGirls', 'HotForFitness')
+    tits = Reddits('fitnessgirls')
     nsfwReddit(cid, uid, chattype, tits)
 
 
@@ -333,5 +328,6 @@ while True:
     try:
         bot.polling(none_stop=True)
     except Exception as e:
+        logger.error(e)
         last_error_time = time.time()
         traceback.print_tb(e.__traceback__)
