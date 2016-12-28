@@ -1,9 +1,15 @@
 beautifulsoup4==4.4.1
+configparser==3.5.0
+cycler==0.10.0
+matplotlib==1.5.1
+numpy==1.11.2
 py==1.4.31
+pyparsing==2.1.10
 pyTelegramBotAPI==1.4.1
 pytest==2.8.5
+python-dateutil==2.6.0
+pytz==2016.10
 requests==2.9.1
 six==1.10.0
-wheel==0.24.0
+tinydb==3.2.1
 uptime==3.0.1
-matplotlib==1.5.1

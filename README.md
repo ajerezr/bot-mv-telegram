@@ -9,6 +9,7 @@ $ #For Debian / Ubuntu :
 $    sudo apt-get install python-matplotlib
 $ #For Fedora / Redhat :
 $    sudo yum install python-matplotlib
+$ #Get Token from @BotFather on telegram and put it in settings.ini
 $ #All ready!
 $ python bot.py
 ```
