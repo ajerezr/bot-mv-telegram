@@ -1,19 +1,20 @@
-from modules.tools import get_logger
-from modules.tools import GetJson
 import threading
 import queue
+import modules.loggers
+import logging
+from modules.tools import GetJson
 
 porn_dict = dict()
 lock = threading.Lock()
-logger = get_logger()
+logger = logging.getLogger(__name__)
 
 def Reddits(key):
     global porn_dict # un poco guarrete...
     if key in porn_dict.keys():
         try:
             lock.acquire()
-            logger.info(porn_dict[key])
             content = porn_dict[key].pop()['data']['url']
+            logger.info('From {} len {} send {}'.format(key, len(porn_dict[key]), content))
             lock.release()
             return content
         except IndexError as indexError: # lista vacia
@@ -33,11 +34,10 @@ def Reddits(key):
         else:
             for url in reddits[key]:
                 urls.append(r + url)
-
     try:
         threads = []
         for url in urls:
-            t = threading.Thread(target=GetJson, args=(url,), kwargs=dict(queue=q))
+            t = threading.Thread(target=GetJson, args=(url,), kwargs=dict(queue=q), name=key)
             threads.append(t)
             t.start()
         data = list()
@@ -49,8 +49,9 @@ def Reddits(key):
         porn_dict[key] = data
         content = porn_dict[key].pop()['data']['url']
         lock.release()
+        logger.info('send {}'.format(content))
         return content
     except Exception as e:
         lock.release()
-        logger.error(e)
-        return "An error ocurred :(", e
+        logger.warning(e)
+        return "An error ocurred :(" + e

@@ -3,6 +3,7 @@
 import telebot
 import time
 import config
+import logging
 import os
 import random
 import requests
@@ -18,27 +19,27 @@ from modules.xtuff import Boobs, Butts
 from modules.imdb import Imdb
 from modules.fa import FiAf
 from modules.tools import ChatUserName
-from modules.tools import get_logger
 from modules.uptime import uptime_string
 from modules.weather import weather
 from modules.domain import DomainChecker
 
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
-if config.getToken() is None or "":
-    print("No token set for the bot. Please set a token in the config.py file.")
-    exit(1)
+#############################################
+# Telebot Logging                           #
+#############################################
+hdlr = logging.FileHandler('files/logs/loggin.log')
+hdlr.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+logger = telebot.logger
+telebot.logger.addHandler(hdlr)
 
-# Make the temporal folder
-if not os.path.isdir('files/temp/'):
-    os.makedirs('files/temp/')
-
+#############################################
+# Init bot and error control                #
+#############################################
 bot = telebot.TeleBot(config.getToken())
 start_time = time.time()
 last_error_time = None
 
-
 #############################################
-# Listener                                  #
+# Record  responses                         #
 #############################################
 def listener(messages):
     for m in messages:
@@ -49,21 +50,13 @@ def listener(messages):
         username = ChatUserName(m)
         # [time][cid][chat_type][chat_title][username][m.text]
         mensaje = ("[%s][%s][%s][%s][%s][%s]" % (now, cid, chat_type, chat_title, username, m.text))
-        log_path = 'files/'
-        log_file = "log"
-        if not os.path.isdir(log_path):
-            os.makedirs(log_path)
+        log_path = 'files/logs/'
+        log_file = "listener.log"
         f = open(log_path + log_file, 'a')
         f.write(mensaje + "\n")
         f.close()
 
-
 bot.set_update_listener(listener)
-
-#############################################
-# logging                                  #
-#############################################
-logger = get_logger()
 
 #############################################
 # Return message                            #

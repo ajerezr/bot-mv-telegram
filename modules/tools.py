@@ -1,7 +1,12 @@
 import requests
 import unicodedata
 import logging
+import modules.loggers
 import telebot
+import string
+import random
+
+logger = logging.getLogger(__name__)
 
 def GetJson(url, param=None, queue=None):
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:43.0) Gecko/20100101 Firefox/43.0'}
@@ -9,7 +14,9 @@ def GetJson(url, param=None, queue=None):
         rest = requests.get(url, params=param, headers=headers)
         if queue is not None:
             queue.put(rest.json())
+            logger.info('Request Done at {}'.format(url))
         else:
+            logger.info('Request Done at {}'.format(url))
             return rest.json()
     except requests.exceptions.RequestException as e:
         logger.error(e)
@@ -36,18 +43,10 @@ def ChatUserName(m):
     else:
         return m.from_user.first_name
 
-
+# http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
 def Strip_accents(s):
-    # http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
     return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
 
-
-def get_logger():
-    hdlr = logging.FileHandler('files/logging.log')
-    hdlr.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-    logger = telebot.logger
-    telebot.logger.addHandler(hdlr)
-    telebot.logger.setLevel(logging.WARNING)
-    return logger
-
-logger = get_logger()
+# http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
