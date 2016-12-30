@@ -117,11 +117,11 @@ def command_thread(m):
 
 @bot.message_handler(commands=['repo'])
 @async()
-def command_repo(m):
-    cid = m.chat.id
-    bot.send_chat_action(cid, "typing")
-    msg = '[Repositorio en Github](https://github.com/ajerezr/bot-mv-telegram)'
-    bot.send_message(cid, msg, parse_mode="Markdown")
+def command_help(m):
+    markup = types.InlineKeyboardMarkup()
+    itembtnrepo = types.InlineKeyboardButton('Repo Github', url=https://github.com/ajerezr/bot-mv-telegram")
+    markup.row(itembtnrepo)
+    bot.send_message(m.chat.id, "Choose an option:", reply_markup=markup)
 
 
 @bot.message_handler(commands=['imdb'])
