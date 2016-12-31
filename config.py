@@ -2,8 +2,9 @@
 import configparser
 import os
 import sys
-import traceback
-from modules.tools import id_generator
+import string
+import random
+
 
 # Inicialize settings
 ini = 'settings.ini'
@@ -17,6 +18,16 @@ if not Config.read(ini):
 if not Config.get('telebot', 'token'):
     print(errors['token'])
     sys.exit(1)
+try:
+    Temp_folder, Log_folder = Config.get('folders', 'temp_folder'), Config.get('folders', 'log_folder')
+    if not os.path.isdir(Temp_folder):
+        os.makedirs(Temp_folder)
+    if not os.path.isdir(Log_folder):
+        os.makedirs(Log_folder)
+except Exception as e:
+    print(e)
+    sys.exit(1)
+
 
 def getToken():
     return Config.get('telebot', 'token')
@@ -33,15 +44,15 @@ def getTempFolder():
 def getAdminEmail():
     return Config.get('admin', 'email')
 
-def editAdminPassword():
+def edit_admin_password():
     #For next dlc
     pass
 
-def editAdminEmail():
+def edit_admin_email():
     #For next dlc
     pass
 
-def configLogFolder(folder):
+def set_logconf_folder(folder):
     log_conf = 'log_config.ini'
     Config = configparser.ConfigParser()
     Config.read(log_conf)
@@ -49,20 +60,20 @@ def configLogFolder(folder):
     with open(log_conf, 'w') as configfile:
         Config.write(configfile)
 
+# http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
-if __name__ == '__main__':
+
+def check_admin_key():
     try:
+        Config.read(ini)
+        set_logconf_folder(Log_folder)
         if not Config.get('admin','key'):
             Config.set('admin', 'key', id_generator())
             with open(ini, 'w') as configfile:
                 Config.write(configfile)
             print('You default admin key is: {} - edit {} to change it'.format(Config.get('admin','key'), ini))
-        Temp_folder, Log_folder = Config.get('folders', 'temp_folder'), Config.get('folders', 'log_folder')
-        if not os.path.isdir(Temp_folder):
-            os.makedirs(Temp_folder)
-        if not os.path.isdir(Log_folder):
-            os.makedirs(Log_folder)
-        configLogFolder(Log_folder)
     except Exception as error:
         print(error)
         sys.exit(1)

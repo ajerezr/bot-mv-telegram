@@ -3,7 +3,6 @@ import unicodedata
 import logging
 import modules.loggers
 import telebot
-import string
 import random
 
 logger = logging.getLogger(__name__)
@@ -46,7 +45,3 @@ def ChatUserName(m):
 # http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
 def Strip_accents(s):
     return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
-
-# http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
-def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
