@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+from telebot import types
 import telebot
 import time
 import config
@@ -34,6 +35,7 @@ telebot.logger.addHandler(hdlr)
 #############################################
 # Init bot and error control                #
 #############################################
+config.check_admin_key()
 bot = telebot.TeleBot(config.getToken())
 start_time = time.time()
 last_error_time = None
@@ -117,12 +119,11 @@ def command_thread(m):
 
 @bot.message_handler(commands=['repo'])
 @async()
-def command_help(m):
+def command_repo(m):
     markup = types.InlineKeyboardMarkup()
-    itembtnrepo = types.InlineKeyboardButton('Repo Github', url=https://github.com/ajerezr/bot-mv-telegram")
+    itembtnrepo = types.InlineKeyboardButton('Repo Github', url='https://github.com/ajerezr/bot-mv-telegram')
     markup.row(itembtnrepo)
-    bot.send_message(m.chat.id, "Choose an option:", reply_markup=markup)
-
+    bot.send_message(m.chat.id, '\U000021b3 MV_BOT_REPO \U00002122', reply_markup=markup)
 
 @bot.message_handler(commands=['imdb'])
 @async()

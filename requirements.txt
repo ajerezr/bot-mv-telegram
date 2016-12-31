@@ -5,11 +5,11 @@ matplotlib==1.5.1
 numpy==1.11.2
 py==1.4.31
 pyparsing==2.1.10
-pyTelegramBotAPI==1.4.1
+pyTelegramBotAPI==2.3.0
 pytest==2.8.5
 python-dateutil==2.6.0
 pytz==2016.10
-requests==2.9.1
+requests==2.12.4
 six==1.10.0
 tinydb==3.2.1
 uptime==3.0.1
