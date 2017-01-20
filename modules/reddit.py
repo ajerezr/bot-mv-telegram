@@ -4,9 +4,9 @@ import modules.loggers
 import logging
 from modules.tools import GetJson
 
+logger = logging.getLogger(__name__)
 porn_dict = dict()
 lock = threading.Lock()
-logger = logging.getLogger(__name__)
 
 def Reddits(key):
     global porn_dict # un poco guarrete...
