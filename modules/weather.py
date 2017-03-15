@@ -1,13 +1,18 @@
 from datetime import datetime, timedelta
 from modules.tools import GetJson, Strip_accents
 from config import getWheatApiKey
+import logging
+import modules.loggers
 import os
 import collections
+import traceback
 
 try:
     import matplotlib.pyplot as plt
 except ImportError:
     print("You need install matplotlib")
+
+logger = logging.getLogger(__name__)
 
 icondict = {'01d': ' \U00002600', '01n': ' \U0001F31B', '02d': ' \U000026C5', '02n': ' \U0001F31B' + '\U00002601',
             '03d': ' \U00002601', '03n': ' \U00002601', '04d': ' \U00002601' + '\U00002601',
@@ -25,19 +30,23 @@ paths['temp_folder'] = paths['root_dir'] + '/files/temp/'
 def GetData(son):
     Data = {}
     daylist, templist, humilist, prevlist, iconlist = [], [], [], [], []
-    for data in range(len(son['list'])):
-        daylist.append(datetime.strptime(son['list'][data]['dt_txt'], '%Y-%m-%d %H:%M:%S'))
-        templist.append(son['list'][data]['main']['temp'])
-        humilist.append(son['list'][data]['main']['humidity'])
-        prevlist.append(son['list'][data]['weather'][0]['description'])
-        iconlist.append(son['list'][data]['weather'][0]['icon'])
-    Data['LastDate'] = datetime.strptime(son['list'][0]['dt_txt'], '%Y-%m-%d %H:%M:%S')
-    Data['datetimes'] = daylist
-    Data['Temps'] = templist
-    Data['humidity'] = humilist
-    Data['prevlist'] = prevlist
-    Data['iconlist'] = iconlist
-    Data['titleplot'] = [son['city']['name'], son['city']['country']]
+    if 'Error' in str(son['message']):
+        logger.error('api response {}'.format(son['message']))
+        Data['error'] = son['message']
+    else:
+        for data in range(len(son['list'])):
+            daylist.append(datetime.strptime(son['list'][data]['dt_txt'], '%Y-%m-%d %H:%M:%S'))
+            templist.append(son['list'][data]['main']['temp'])
+            humilist.append(son['list'][data]['main']['humidity'])
+            prevlist.append(son['list'][data]['weather'][0]['description'])
+            iconlist.append(son['list'][data]['weather'][0]['icon'])
+        Data['LastDate'] = datetime.strptime(son['list'][0]['dt_txt'], '%Y-%m-%d %H:%M:%S')
+        Data['datetimes'] = daylist
+        Data['Temps'] = templist
+        Data['humidity'] = humilist
+        Data['prevlist'] = prevlist
+        Data['iconlist'] = iconlist
+        Data['titleplot'] = [son['city']['name'], son['city']['country']]
     return Data
 
 
@@ -118,12 +127,17 @@ def weather(query):
         try:
             son = GetJson(ow_api, params)
             Data = GetData(son)
-            msg = format_msg(son, Data)
-            resp['txt'] = msg['Txt_top'] + msg['Txt_full_prev']
-            resp['plot'] = PlotAll(Data['datetimes'], Data['Temps'], Data['humidity'], Data['titleplot'])
-            return resp
+            if 'error' in Data.keys():
+                resp['error'] = 'The api response: {}, try again in few seconds'.format(Data['error'])
+                return resp
+            else:
+                msg = format_msg(son, Data)
+                resp['txt'] = msg['Txt_top'] + msg['Txt_full_prev']
+                resp['plot'] = PlotAll(Data['datetimes'], Data['Temps'], Data['humidity'], Data['titleplot'])
+                return resp
         except Exception as error:
             resp['error'] = error
+            logger.exception('error:')
             return resp
     else:
         resp['status'] = "Module Disable"
