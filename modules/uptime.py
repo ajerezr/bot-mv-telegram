@@ -22,8 +22,7 @@ def uptime_string(startup_time_in_seconds, last_error_time):
     try:
         uname = platform.uname()
         uptime_seconds = uptime.uptime()
-    except Exception as e:
-        logger.exception('machine info:',e)
+
     # Delta uptime in human readable format
     uptime_string = str(timedelta(seconds=uptime_seconds))
     # Time now
@@ -41,7 +40,7 @@ def uptime_string(startup_time_in_seconds, last_error_time):
     string += "\U0001F4BB Running on " + uname[0] + " " + uname[2] + " " + uname[4] + "\n"
     string += "\U0000231B Machine Uptime: " + uptime_string + "\n"
     string += "\U0001F916 Bot uptime: " + bot_uptime + "\n"
-    if memory:
+    if memory != None:
         string += "\U0001F4CA Bot memory usage: " + memory + "MB"
 
     if last_error_time is not None:
