@@ -19,9 +19,8 @@ def memory_usage_ps():
 
 def uptime_string(startup_time_in_seconds, last_error_time):
     # Machine info
-    try:
-        uname = platform.uname()
-        uptime_seconds = uptime.uptime()
+    uname = platform.uname()
+    uptime_seconds = uptime.uptime()
 
     # Delta uptime in human readable format
     uptime_string = str(timedelta(seconds=uptime_seconds))
