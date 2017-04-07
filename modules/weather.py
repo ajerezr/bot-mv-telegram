@@ -139,7 +139,7 @@ def weather(query):
                 return resp
         except Exception as error:
             resp['error'] = error
-            logger.exception('error:')
+            logger.exception('error:',error)
             return resp
     else:
         resp['status'] = "Module Disabled"
