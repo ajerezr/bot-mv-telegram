@@ -31,10 +31,11 @@ def uptime_string(startup_time_in_seconds, last_error_time):
     delta = now - startup_time_in_seconds
     bot_uptime = str(timedelta(seconds=int(delta)))
     # Get memory usage with ps
-    try:
-        memory = memory_usage_ps()
-    except Exception as e:
-        logger.exception('memory_usage_ps():',e)
+    #try:
+    #    memory = memory_usage_ps()
+    #except Exception as e:
+    #    logger.exception('memory_usage_ps():',e)
+    
     # Make messsge
     string = ""
     string += "\U0001F4BB Running on " + uname[0] + " " + uname[2] + " " + uname[4] + "\n"
