@@ -1,16 +1,18 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-from telebot import types
+import os
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
+
+import logging
 import telebot
 import time
 import config
-import logging
-import os
 import random
 import requests
 import traceback
 from time import sleep
 from telebot.util import async
+from telebot import types
 from datetime import datetime
 from modules.wiki import Wiki
 from modules.reddit import Reddits
@@ -113,6 +115,7 @@ def command_windows(m):
 @async()
 def command_thread(m):
     cid = m.chat.id
+    bot.send_chat_action(cid, "typing")
     text = "[Hilo GNU/Linux](https://www.mediavida.com/foro/hard-soft/gnulinux-hilo-general-489974)"
     bot.send_message(cid, text, parse_mode="Markdown")
 
@@ -120,6 +123,7 @@ def command_thread(m):
 @bot.message_handler(commands=['repo'])
 @async()
 def command_repo(m):
+    bot.send_chat_action(cid, "typing")
     markup = types.InlineKeyboardMarkup()
     itembtnrepo = types.InlineKeyboardButton('Repo Github', url='https://github.com/ajerezr/bot-mv-telegram')
     markup.row(itembtnrepo)
@@ -138,6 +142,7 @@ def command_imdb(m):
 @async()
 def command_fa(m):
     cid = m.chat.id
+    bot.send_chat_action(cid, "typing")
     msg = FiAf(m.text.replace("/fa ", "").strip())
     if msg["error"]:
         bot.send_message(cid, msg['error'], parse_mode="Markdown")
@@ -276,6 +281,7 @@ def command_wallpapers(m):
     cid = m.chat.id
     # uid = m.from_user.id
     # chattype = m.chat.type
+    bot.send_chat_action(cid, "upload_photo")
     wall = Reddits('wallpapers')
     bot.send_message(cid, wall)
 
@@ -297,6 +303,7 @@ def command_weather(m):
     cid = m.chat.id
     uid = m.from_user.id
     chattype = m.chat.type
+    bot.send_chat_action(cid, "typing")
     query = m.text.strip("/w ")
     to_user = uid if chattype in ("group", "supergroup") else cid
     if query:
