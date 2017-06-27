@@ -20,7 +20,7 @@ from modules.bash import Bash
 from modules.urbdict import Urbdict
 from modules.xtuff import Boobs, Butts
 from modules.imdb import Imdb
-from modules.fa import FiAf
+from modules.fa import FiAf, fa_call_back_direct
 from modules.tools import ChatUserName
 from modules.uptime import uptime_string
 from modules.weather import weather
@@ -88,7 +88,9 @@ def nsfwReddit(cid, uid, chattype, msg):
 #############################################
 # Handlers                                  #
 #############################################
+
 @bot.message_handler(commands=['domain'])
+@async()
 def command_domain(m):
     cid = m.chat.id
     bot.send_chat_action(cid, "typing")
@@ -123,11 +125,11 @@ def command_thread(m):
 @bot.message_handler(commands=['repo'])
 @async()
 def command_repo(m):
-    bot.send_chat_action(cid, "typing")
     markup = types.InlineKeyboardMarkup()
     itembtnrepo = types.InlineKeyboardButton('Repo Github', url='https://github.com/ajerezr/bot-mv-telegram')
     markup.row(itembtnrepo)
     bot.send_message(m.chat.id, '\U000021b3 MV_BOT_REPO \U00002122', reply_markup=markup)
+
 
 @bot.message_handler(commands=['imdb'])
 @async()
@@ -142,12 +144,30 @@ def command_imdb(m):
 @async()
 def command_fa(m):
     cid = m.chat.id
-    bot.send_chat_action(cid, "typing")
-    msg = FiAf(m.text.replace("/fa ", "").strip())
-    if msg["error"]:
-        bot.send_message(cid, msg['error'], parse_mode="Markdown")
+    markup = types.InlineKeyboardMarkup()
+    query = m.text.replace("/fa", "").replace("@bmanbot", "").strip()
+    print(query)
+    if query:
+        msg = FiAf(query)
+        if msg['error']:
+            bot.send_message(cid, msg['error'], parse_mode="Markdown")
+        if msg['list']:
+            text = str(len(msg['list']))+" Resultados"
+            for title, url in msg['list']:
+                id_f = url.replace("https://www.filmaffinity.com/es/", "").replace(".html", "")
+                markup.add(types.InlineKeyboardButton(title, callback_data=id_f))
+            bot.send_message(cid, text, reply_markup=markup)
+        else:
+            bot.send_message(cid, msg['Msg'], parse_mode="Markdown")
     else:
-        bot.send_message(cid, msg['Msg'], parse_mode="Markdown")
+        bot.send_message(cid, "Example: /fa Terminator 2" , parse_mode="Markdown")
+
+
+@bot.callback_query_handler(func=lambda call: "film" in call.data)
+@async()
+def callback_fa(call):
+    msg = fa_call_back_direct(call.data)
+    bot.send_message(call.message.chat.id, msg['info'], parse_mode="Markdown")
 
 
 @bot.message_handler(commands=['butts'])
