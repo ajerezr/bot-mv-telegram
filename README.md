@@ -1,3 +1,12 @@
+### Build and run docker image
+
+```
+docker build -t bot-mv-telegram .
+docker run -d -v /home/docker/settings.ini:/bot-mv-telegram/settings.ini --restart always --name bot-mv-telegram bot-mv-telegram
+```
+Don't forget to map your settings file as a volume (-v /home/docker/settings.ini:/bot-mv-telegram/settings.ini)!!
+
+
 ### Install
 ```sh
 $ git clone https://github.com/ajerezr/bot-mv-telegram.git
