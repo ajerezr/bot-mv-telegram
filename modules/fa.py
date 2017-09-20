@@ -18,39 +18,66 @@ def search(query):
         return soup
 
 
-def FormatList(sl):
-    msg = "*Mas de un resultado:*\n"
-    for titulo, link in sl:
-        msg += "*" + titulo.replace("  ", "") + "* \n" + "/fa " + link.replace("https://www.filmaffinity.com/es/",
-                                                                               "").strip(".html") + "\n"
-    return msg
-
-
 def GetInfoPeli(data):
-    info = {'Title': data.find('title').text.replace(' - FilmAffinity', '').strip(),
-            'Original_title': data.find('dl', {'class': 'movie-info'}).dd.text[17:].replace(' aka', '').strip(),
-            'Date': data.find('dd', {'itemprop': 'datePublished'}).text,
-            'Country': data.find('span', {'id': 'country-img'}).img['title'],
-            'Director': data.find('span', {'itemprop': 'director'}).span.text,
-            'Guion': data.find('dt', text='Guión').findNext('dd').text,
-            'Music': data.find('dt', text='Música').findNext('dd').text,
-            'Sinopsis': data.find('dd', {'itemprop': 'description'}).text.replace("(FILMAFFINITY)", ""),
-            'Image': data.find('img', {'itemprop': 'image'})['src']}
+    # Not Beautiful
+    info = {}
+    info['Genre'], info['Actors'] = [], []
+    try:
+        info['Title'] = data.find('title').text.replace(' - FilmAffinity', '').strip()
+    except Exception:
+        info['Title'] = 'NA'
+    try:
+        info['Original_title'] = data.find('dl', {'class': 'movie-info'}).dd.text[17:].replace(' aka', '').strip()
+    except Exception:
+        info['Original_title'] = 'NA'
+    try:
+        info['Date'] = data.find('dd', {'itemprop': 'datePublished'}).text
+    except Exception:
+        info['Date'] = 'NA'
+    try:
+        info['Country'] = data.find('span', {'id': 'country-img'}).img['title']
+    except Exception:
+        info['Country'] = 'NA'
+    try:
+        info['Director'] = data.find('span', {'itemprop': 'director'}).span.text
+    except Exception:
+        info['Director'] = 'NA'
+    try:
+        info['Guion'] = data.find('dt', text='Guión').findNext('dd').text
+    except Exception:
+        info['Guion'] = 'NA'
+    try:
+        info['Music'] = data.find('dt', text='Música').findNext('dd').text
+    except Exception:
+        info['Music'] = 'NA'
+    try:
+        info['Sinopsis'] = data.find('dd', {'itemprop': 'description'}).text.replace("(FILMAFFINITY)", "")
+    except Exception:
+        info['Sinopsis'] = 'NA'
+    try:
+        info['Image'] = data.find('img', {'itemprop': 'image'})['src']
+    except Exception:
+        info['Image'] = 'NA'
     try:
         info['Rating'] = data.find('div', {'id': 'movie-rat-avg'})['content']
     except Exception:
         info['Rating'] = 'NA'
-    info['Genre'], info['Actors'] = [], []
-    for items in data.find('dt', text='Reparto').findNext('dd'):
-        if str(type(items)) == "<class 'bs4.element.Tag'>":
-            info['Actors'].append(items.span.text.strip())
-    for gen in data.findAll('span', {'itemprop': 'genre'}):
-        info['Genre'].append(gen.a.text)
+    try:
+        for items in data.find('dt', text='Reparto').findNext('dd'):
+            if str(type(items)) == "<class 'bs4.element.Tag'>":
+                info['Actors'].append(items.span.text.strip())
+    except Exception:
+        info['actors'] = 'NA'
+    try:
+        for gen in data.findAll('span', {'itemprop': 'genre'}):
+            info['Genero'].append(gen.a.text)
+    except Exception:
+        info['Genero'] = 'NA'
     return info
 
 
 def FormatMsgInfo(data):
-    tags = ['Original_title', 'Date', 'Country', 'Director', 'Guion', 'Music', 'Actors', 'Genre', 'Rating', 'Sinopsis']
+    tags = ['Original_title', 'Date', 'Country', 'Director', 'Guion', 'Music', 'Actors', 'Genero', 'Rating', 'Sinopsis']
     string = "[" + data['Title'] + "](" + data['Image'] + ")" + "\n"
     for tag in tags:
         if type(data[tag]) is list:
@@ -69,37 +96,22 @@ def DirectLink(id_url):
     return soup
 
 
-##########
-# "Main" # http://i1.kym-cdn.com/entries/icons/original/000/013/743/Naamloos-2.png
-#################################################################
-# if query is film"id":'film344554' and "sure" is good id
-# return formating info -> FormatMsgInfo(food)
-# if query is other string
-# shearch this string
-# if shearch result is list return this list -> FormatList(food)
-# else result is film description then -> FormatMsgInfo(food)
-# >shit return "error"
-################################################################
+def fa_call_back_direct(id_url):
+    msg = {}
+    d_link_soup = DirectLink(id_url)
+    info = GetInfoPeli(d_link_soup)
+    msg['info'] = FormatMsgInfo(info)
+    return msg
+
+
 def FiAf(query):
     msg = {'Msg': "", 'error': None}
-    if "film" in query and query.split("film")[1].isdigit():
-        id_url = query.split("film")[1] if len(query.split("film")[1]) == 6 else None
-        if id_url:
-            try:
-                d_link_soup = DirectLink(query)
-                info = GetInfoPeli(d_link_soup)
-                msg['Msg'] = FormatMsgInfo(info)
-            except Exception:
-                msg['error'] = query + " *Mala consulta*"
-        else:
-            msg['error'] = query + " *id error*"
+    result = search(query)
+    if type(result) is list:
+        msg['list'] = result
+    elif 'Búsqueda' in result.title.text:
+        msg['Msg'] = "nope :("
     else:
-        result = search(query)
-        if type(result) is list:
-            msg['Msg'] = FormatList(result)
-        elif 'Búsqueda' in result.title.text:
-            msg['Msg'] = "nope :("
-        else:
-            info = GetInfoPeli(result)
-            msg['Msg'] = FormatMsgInfo(info)
+        info = GetInfoPeli(result)
+        msg['Msg'] = FormatMsgInfo(info)
     return msg
