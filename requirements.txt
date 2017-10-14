@@ -2,7 +2,6 @@ beautifulsoup4==4.4.1
 configparser==3.5.0
 cycler==0.10.0
 matplotlib==1.5.1
-numpy==1.11.2
 py==1.4.31
 pyparsing==2.1.10
 pyTelegramBotAPI==2.3.0

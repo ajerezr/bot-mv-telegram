@@ -5,7 +5,6 @@ import sys
 import string
 import random
 
-
 # Inicialize settings
 ini = 'settings.ini'
 Config = configparser.ConfigParser()
@@ -15,9 +14,11 @@ errors = {'readini': '\033[31m Error \033[39m - cannot read -> \033[32m {} \033[
 if not Config.read(ini):
     print(errors['readini'])
     sys.exit(1)
-if not Config.get('telebot', 'token'):
+if not Config.get('telebot', 'token') and \
+    not os.environ.get('TOKEN'):
     print(errors['token'])
     sys.exit(1)
+token = os.environ.get('TOKEN')
 try:
     Temp_folder, Log_folder = Config.get('folders', 'temp_folder'), Config.get('folders', 'log_folder')
     if not os.path.isdir(Temp_folder):
@@ -30,7 +31,7 @@ except Exception as e:
 
 
 def getToken():
-    return Config.get('telebot', 'token')
+    return token or Config.get('telebot', 'token')
 
 def getWheatApiKey():
     return Config.get('apis', 'OpenWheatKey')

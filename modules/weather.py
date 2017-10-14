@@ -10,7 +10,7 @@ import traceback
 try:
     import matplotlib.pyplot as plt
 except ImportError:
-    print("You need install matplotlib")
+    print("Matplotlib not available")
 
 logger = logging.getLogger(__name__)
 
@@ -87,6 +87,8 @@ def format_msg(son, data):
 
 
 def PlotAll(date, temps, humi, title):
+    if not plt:
+        return None
     name = Strip_accents(title[0])
     plot_image = paths["temp_folder"] + name + '.png'
     fig = plt.figure(figsize=(12, 6))
@@ -137,8 +139,8 @@ def weather(query):
                 return resp
         except Exception as error:
             resp['error'] = error
-            logger.exception('error:')
+            logger.exception('error:',error)
             return resp
     else:
-        resp['status'] = "Module Disable"
+        resp['status'] = "Module Disabled"
         return resp
