@@ -113,6 +113,24 @@ def command_windows(m):
     bot.send_message(cid, 'Vete a la mierda')
 
 
+@bot.message_handler(commands=['tpm'])
+@async()
+def command_windows(m):
+    cid = m.chat.id
+    bot.send_chat_action(cid, "typing")
+    sleep(1)
+    bot.send_message(cid, 'hdp')
+
+
+@bot.message_handler(commands=['hdp'])
+@async()
+def command_windows(m):
+    cid = m.chat.id
+    bot.send_chat_action(cid, "typing")
+    sleep(1)
+    bot.send_message(cid, 'tpm')
+
+
 @bot.message_handler(commands=['thread'])
 @async()
 def command_thread(m):
@@ -299,8 +317,6 @@ def command_fitnessgirls(m):
 @async()
 def command_wallpapers(m):
     cid = m.chat.id
-    # uid = m.from_user.id
-    # chattype = m.chat.type
     bot.send_chat_action(cid, "upload_photo")
     wall = Reddits('wallpapers')
     bot.send_message(cid, wall)
@@ -310,9 +326,7 @@ def command_wallpapers(m):
 @async()
 def command_uptime(m):
     cid = m.chat.id
-    # uid = m.from_user.id
     bot.send_chat_action(cid, "typing")
-    # chattype = m.chat.type
     message = uptime_string(start_time, last_error_time)
     bot.send_message(cid, message)
 
