@@ -45,4 +45,6 @@ fun :D
 * /domain - Checks if a given domain is avilable
 * /w - search weather prevision and plot data
 * /windows - vete a la mierda
+* /hdp - tpm
+* /tpm - hdp
 * /domain - checks if a given domain is avilable
